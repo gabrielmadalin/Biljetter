@@ -1,5 +1,8 @@
 Ändringslogg:
 
+1.5.5 (2012-02-04)
+* Lade till stöd för Ice Cream Sandwich
+
 1.5.4 (2011-11-24)
 * Lade till beskrivningar för en del av biljetterna
 * Rensat upp i menyn
