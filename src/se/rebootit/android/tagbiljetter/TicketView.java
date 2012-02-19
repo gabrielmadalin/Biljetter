@@ -24,6 +24,7 @@ public class TicketView extends Activity
 	Ticket ticket;
 	DataParser dataParser = Biljetter.getDataParser();
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
+	DataBaseHelper dbHelper = Biljetter.getDataBaseHelper();
 	boolean fromNotification = false;
 
 	NotificationManager mNotificationManager;
@@ -90,15 +91,15 @@ public class TicketView extends Activity
 
 		return true;
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
 		if (fromNotification) {
-			((MenuItem)menu.findItem(R.id.menuNotification)).setTitle(getString(R.string.TicketView_notificationHide));
+			((MenuItem)menu.findItem(R.id.menuNotification)).setTitle(getString(R.string.TicketView_menu_notificationHide));
 		}
 		else {
-			((MenuItem)menu.findItem(R.id.menuNotification)).setTitle(getString(R.string.TicketView_notificationShow));
+			((MenuItem)menu.findItem(R.id.menuNotification)).setTitle(getString(R.string.TicketView_menu_notificationShow));
 		}
 
 		return true;
@@ -140,8 +141,36 @@ public class TicketView extends Activity
 				}
 				return true;
 
+			case R.id.menuRemove:
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle(getString(R.string.TicketView_confirmRemoveTitle));
+				builder.setMessage(getString(R.string.TicketView_confirmRemoveMessage));
+				builder.setPositiveButton(getString(R.string.yes), dialogClickListener);
+				builder.setNegativeButton(getString(R.string.no), dialogClickListener);
+				builder.setIcon(android.R.drawable.ic_dialog_alert);
+				builder.show();
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 	}
+
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
+	{
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					dbHelper.removeTicket(ticket.getAddress(), ticket.getTimestamp(), ticket.getMessage());
+
+					Biljetter.getContext().sendBroadcast(new Intent("se.rebootit.android.tagbiljett.TicketList.UPDATE_LIST"));
+
+					setResult(RESULT_OK, getIntent());
+					finish();
+
+					break;
+			}
+		}
+	};
 }

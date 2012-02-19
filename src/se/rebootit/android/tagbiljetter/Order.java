@@ -21,12 +21,12 @@ import se.rebootit.android.tagbiljetter.models.*;
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
- 
+
 public class Order extends Activity
 {
 	ArrayList<TransportCompany> lstCompanies = new ArrayList<TransportCompany>();
 	ListAdapter adapter = new OrderCompanyListAdapter(this.lstCompanies, this);
-	
+
 	DataParser dataParser = new DataParser();
 
 	@Override
@@ -36,7 +36,7 @@ public class Order extends Activity
 		setContentView(R.layout.companylist);
 
 		lstCompanies.addAll(dataParser.getCompanies());
-		
+
 		ListView list = (ListView)findViewById(R.id.companylist);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new OnItemClickListener()
