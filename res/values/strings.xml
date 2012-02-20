@@ -32,9 +32,6 @@
 	<string name="TicketList_menu_settings">Inställningar</string>
 	<string name="TicketList_menu_about">Om Biljetter</string>
 
-	<string name="Wizard_header">Biljetter</string>
-	<string name="Wizard_description">Den här appen kommer hjälpa ditt resande genom att hålla koll på dina inkommande sms-biljetter och göra det lätt att visa den för chaufförer och kontrollanter.\n\nI appen finns det även stöd för att beställa nya biljetter från flera olika reseföretag.\nAllt med bara några tryck!</string>
-
 	<string name="Contact_header">Kontakt</string>
 	<string name="Contact_reason">Orsak</string>
 	<string name="Contact_city">Stad</string>
@@ -54,9 +51,9 @@
 
 	<string name="About_header">Om Biljetter</string>
 	<string name="About_description">Det här är en app som hanterar dina sms-biljetter från både tåg- och bussbolag. Allt samlat på ett och samma ställe!\n\nAppen är släppt under GPL 3 och support och hela källkoden finns tillgängligt på GitHub.</string>
-	<string name="About_btnGitHub">Biljetter på GitHub</string>
-	<string name="About_btnFlattr">Flattra appen</string>
-	<string name="About_btnWizard">Guide och ändringslogg</string>
+	<string name="About_webpage">Webbplats</string>
+	<string name="About_donate">Donera till appen</string>
+	<string name="About_changelog">Ändringslogg</string>
 
 	<string name="SmsReceiver_newticket">Ny biljett mottagen!</string>
 	<string name="SmsReceiver_description">För resa %date%</string>

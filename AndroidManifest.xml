@@ -11,7 +11,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".TicketView" android:label="@string/TicketView_header" />
-		<activity android:name=".Wizard" android:label="@string/Wizard_header" />
 		<activity android:name=".Settings" android:label="@string/Settings_header" />
 		<activity android:name=".Order" android:label="@string/Order_header" />
 		<activity android:name=".OrderOptions" android:label="@string/OrderOptions_header" />
