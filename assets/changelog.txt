@@ -1,4 +1,7 @@
-Ändringslogg:
+1.5.6 (2012-02-20)
+* Flyttade in ändringsloggen i Om-rutan
+* Lade till en funktion för att ta bort biljetter
+* Lite småfixar
 
 1.5.5 (2012-02-04)
 * Lade till stöd för Ice Cream Sandwich
