@@ -204,12 +204,12 @@ public class TicketList extends Activity implements OnClickListener
 				intent = new Intent(this, Order.class);
 				startActivity(intent);
 				return true;
-
+/*
 			case R.id.contact:
 				intent = new Intent(this, CompanyList.class);
 				startActivity(intent);
 				return true;
-
+*/
 			case R.id.settings:
 				intent = new Intent(this, Settings.class);
 				startActivity(intent);
