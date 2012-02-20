@@ -25,27 +25,27 @@
 				android:paddingBottom="9sp"
 				android:linksClickable="true" />
 
-			<Button android:id="@+id/btnGitHub"
+			<Button android:id="@+id/btnWebpage"
 				style="?button"
-				android:text="@string/About_btnGitHub"
+				android:text="@string/About_webpage"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:drawableLeft="@drawable/blacktocat"
 				android:drawablePadding="15sp"
 				android:gravity="left|center_vertical" />
 
-			<Button android:id="@+id/btnFlattr"
+			<Button android:id="@+id/btnDonate"
 				style="?button"
-				android:text="@string/About_btnFlattr"
+				android:text="@string/About_donate"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:drawableLeft="@drawable/donate_flattr"
 				android:drawablePadding="15sp"
 				android:gravity="left|center_vertical" />
 
-			<Button android:id="@+id/btnWizard"
+			<Button android:id="@+id/btnChangelog"
 				style="?button"
-				android:text="@string/About_btnWizard"
+				android:text="@string/About_changelog"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:drawableLeft="@drawable/changelog_icon"

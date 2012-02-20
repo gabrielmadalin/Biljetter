@@ -53,8 +53,7 @@ public class DataParser
 		int messageScanned = 0;
 		long lastmessage = sharedPreferences.getLong("lastmessage", 0);
 		long lastmessagetime = 0;
-		
-		Log.i(Biljetter.LOG_TAG, "Scan for tickets started");
+
 		if (messageCount > 0)
 		{
 			while (cursor.moveToNext())
@@ -66,7 +65,6 @@ public class DataParser
 				}
 
 				if (lastmessage >= messagetime) {
-					Log.i(Biljetter.LOG_TAG, "No scan needed!");
 					break;
 				}
 
@@ -94,7 +92,6 @@ public class DataParser
 			e.putLong("lastmessage", lastmessagetime);
 			e.commit();
 		}
-		Log.i(Biljetter.LOG_TAG, "Scan complete! "+messageScanned+" messages scanned!");
 	}
 
 	/**
@@ -230,8 +227,9 @@ public class DataParser
 				this.currentCompany.setName(attributes.getValue("name"));
 				this.currentCompany.setPhoneNumber(attributes.getValue("phonenumber"));
 				this.currentCompany.setLogo(attributes.getValue("logo"));
-				if (attributes.getValue("headercolor") != null) {
-					this.currentCompany.setHeaderColor(attributes.getValue("headercolor"));
+				this.currentCompany.setEmail(attributes.getValue("email"));
+				if (attributes.getValue("textcolor") != null) {
+					this.currentCompany.setTextColor(attributes.getValue("textcolor"));
 				}
 			}
 			else if (localName.equalsIgnoreCase("area")) {

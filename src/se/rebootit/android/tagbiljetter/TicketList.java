@@ -4,7 +4,7 @@
  */
 
 package se.rebootit.android.tagbiljetter;
- 
+
 import java.util.*;
 import java.io.*;
 
@@ -22,10 +22,11 @@ import android.widget.*;
 import android.widget.AdapterView.*;
 
 import se.rebootit.android.tagbiljetter.models.*;
+import se.rebootit.android.tagbiljetter.contact.*;
 
 /**
  * TicketList is the class that lists all the found tickets in the users SMS inbox.
- * 
+ *
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
@@ -33,15 +34,15 @@ public class TicketList extends Activity implements OnClickListener
 {
 	ArrayList<Ticket> lstTickets = new ArrayList<Ticket>();
 	TicketListAdapter adapter = new TicketListAdapter(this.lstTickets, this);
-	
+
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 	DataParser dataParser = Biljetter.getDataParser();
 	DataBaseHelper dbHelper = Biljetter.getDataBaseHelper();
-	
+
 	IntentFilter mIntentFilter;
-	
+
 	boolean scanRunning = false;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -52,39 +53,6 @@ public class TicketList extends Activity implements OnClickListener
 		mIntentFilter = new IntentFilter();
 		mIntentFilter.addAction("se.rebootit.android.tagbiljett.TicketList.UPDATE_LIST");
 
-		// If this is the first time this version of the application is run? Then show the Wizard!
-		try {
-			PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			int versionNumber = pinfo.versionCode;
-
-			if (sharedPreferences.getInt("wizard", 0) < versionNumber)
-			{
-				final Dialog dialog = new Dialog(this);
-				dialog.setCancelable(true);
-				dialog.setContentView(R.layout.wizard);
-				dialog.setTitle(getString(R.string.Wizard_header));
-
-				TextView txtChangelog = (TextView)dialog.findViewById(R.id.txtChangelog);
-				txtChangelog.setText(dataParser.readAsset("changelog.txt", this).toString());
-
-				Button button = (Button)dialog.findViewById(R.id.btnClose);
-				button.setOnClickListener(new Button.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dialog.dismiss();
-					}
-				});
-
-				dialog.show();
-
-				scanForTickets(false, false);
-
-				Editor e = sharedPreferences.edit();
-				e.putInt("wizard", versionNumber);
-				e.commit();
-			}
-		} catch (Exception e) { }
-
 		((Button)findViewById(R.id.btnScan)).setOnClickListener(this);
 		((Button)findViewById(R.id.btnOrder)).setOnClickListener(this);
 
@@ -93,13 +61,14 @@ public class TicketList extends Activity implements OnClickListener
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new OnItemClickListener()
 		{
-			public void onItemClick(AdapterView<?> info, View v, int position, long id) {
+			public void onItemClick(AdapterView<?> info, View v, int position, long id)
+			{
 				Ticket ticket = lstTickets.get(position);
 
 				// Show TicketView
 				Intent intent = new Intent(TicketList.this, TicketView.class);
 				intent.putExtra("ticket", (Parcelable)ticket);
-				startActivity(intent);
+				startActivityForResult(intent, 0);
 
 				updateList();
 			}
@@ -110,6 +79,34 @@ public class TicketList extends Activity implements OnClickListener
 
 		// Load tickets and update the list
 		updateList();
+	}
+
+	public void onClick(View v)
+	{
+		switch(v.getId())
+		{
+			case R.id.btnScan:
+				scanForTickets(true, true);
+				break;
+
+			case R.id.btnOrder:
+				Intent intent = new Intent(this, Order.class);
+				startActivity(intent);
+				break;
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		switch(requestCode)
+		{
+			case 0:
+				if (resultCode == RESULT_OK) {
+					updateList();
+				}
+				break;
+		}
 	}
 
 	/**
@@ -126,7 +123,7 @@ public class TicketList extends Activity implements OnClickListener
 			Collections.sort(this.lstTickets);
 
 			adapter.notifyDataSetChanged();
-			
+
 			((LinearLayout)findViewById(R.id.no_tickets)).setVisibility(LinearLayout.GONE);
 		}
 		else {
@@ -134,25 +131,10 @@ public class TicketList extends Activity implements OnClickListener
 		}
 	}
 
-	public void onClick(View v)
-	{
-		switch(v.getId())
-		{
-			case R.id.btnScan:
-				scanForTickets(true, true);
-				break;
-				
-			case R.id.btnOrder:
-				Intent intent = new Intent(this, Order.class);
-				startActivity(intent);
-				break;
-		}
-	}
-
 	private void scanForTickets() {
 		scanForTickets(false, false);
 	}
-	
+
 	private void scanForTickets(boolean clearCache) {
 		scanForTickets(clearCache, false);
 	}
@@ -168,7 +150,7 @@ public class TicketList extends Activity implements OnClickListener
 			return;
 		}
 		scanRunning = true;
-				
+
 		final Handler mHandler = new Handler();
 		final ProgressDialog dialog = new ProgressDialog(this);
 		if (notify) {
@@ -199,15 +181,50 @@ public class TicketList extends Activity implements OnClickListener
 		};
 		t.start();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.ticketlist, menu);
-		
+
 		return true;
 	}
-	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+
+		// Handle item selection
+		switch (item.getItemId()) {
+			case R.id.scan:
+				scanForTickets(false, true);
+				return true;
+
+			case R.id.order:
+				intent = new Intent(this, Order.class);
+				startActivity(intent);
+				return true;
+/*
+			case R.id.contact:
+				intent = new Intent(this, CompanyList.class);
+				startActivity(intent);
+				return true;
+*/
+			case R.id.settings:
+				intent = new Intent(this, Settings.class);
+				startActivity(intent);
+				return true;
+
+			case R.id.about:
+				intent = new Intent(this, About.class);
+				startActivity(intent);
+				return true;
+
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
 	@Override
 	protected void onResume() {
 		registerReceiver(mIntentReceiver, mIntentFilter);
@@ -221,51 +238,21 @@ public class TicketList extends Activity implements OnClickListener
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent;
-		
-		// Handle item selection
-		switch (item.getItemId()) {
-			case R.id.scan:
-				scanForTickets(false, true);
-				return true;
-
-			case R.id.order:
-				intent = new Intent(this, Order.class);
-				startActivity(intent);
-				return true;
-				
-			case R.id.settings:
-				intent = new Intent(this, Settings.class);
-				startActivity(intent);
-				return true;
-				
-			case R.id.about:
-				intent = new Intent(this, About.class);
-				startActivity(intent);
-				return true;
-			
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
-	
-	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState)
 	{
 		savedInstanceState.putParcelableArrayList("tickets", this.lstTickets);
 
 		super.onSaveInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState)
 	{
 		super.onRestoreInstanceState(savedInstanceState);
-		
+
 		if (this.lstTickets.size() == 0) {
 			this.lstTickets = (ArrayList)savedInstanceState.getParcelableArrayList("tickets");
-			
+
 			updateList();
 		}
 	}

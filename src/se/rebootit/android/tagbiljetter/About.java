@@ -22,16 +22,18 @@ import android.widget.*;
  */
 public class About extends Activity implements OnClickListener
 {
+	DataParser dataParser = Biljetter.getDataParser();
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about);
-		
-		((Button)findViewById(R.id.btnGitHub)).setOnClickListener(this);
-		((Button)findViewById(R.id.btnFlattr)).setOnClickListener(this);
-		((Button)findViewById(R.id.btnWizard)).setOnClickListener(this);
-		
+
+		((Button)findViewById(R.id.btnWebpage)).setOnClickListener(this);
+		((Button)findViewById(R.id.btnDonate)).setOnClickListener(this);
+		((Button)findViewById(R.id.btnChangelog)).setOnClickListener(this);
+
 		// Make sure the links in the text is clickable
 		((TextView)findViewById(R.id.txtDescription)).setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -53,21 +55,30 @@ public class About extends Activity implements OnClickListener
 		switch(v.getId())
 		{
 			// Open our github page in the web browser
-			case R.id.btnGitHub:
+			case R.id.btnWebpage:
 				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/erifre/Biljetter"));
 				startActivity(intent);
 				break;
 
 			// Open our flattr page in the web browser
-			case R.id.btnFlattr:
+			case R.id.btnDonate:
 				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://flattr.com/thing/371293"));
 				startActivity(intent);
 				break;
 
 			// Open our Wizard
-			case R.id.btnWizard:
-				intent = new Intent(this, Wizard.class);
-				startActivity(intent);
+			case R.id.btnChangelog:
+
+				Dialog dialog = new Dialog(this);
+				dialog.setCancelable(true);
+				dialog.setContentView(R.layout.changelog);
+				dialog.setTitle(getString(R.string.About_changelog));
+
+				TextView txtChangelog = (TextView)dialog.findViewById(R.id.txtChangelog);
+				txtChangelog.setText(dataParser.readAsset("changelog.txt", this).toString());
+
+				dialog.show();
+
 				break;
 		}
 	}

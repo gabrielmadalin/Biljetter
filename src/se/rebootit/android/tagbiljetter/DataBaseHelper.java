@@ -17,7 +17,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
 	private static String DB_NAME = "biljetter.sqlite";
 
 	private SQLiteDatabase myDataBase;
-	private SQLiteDatabase db; 
+	private SQLiteDatabase db;
 	private final Context myContext;
 
 	/**
@@ -29,7 +29,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
 	{
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
-	}	
+	}
 
 	/**
 	* Creates a empty database on the system and rewrites it with your own database.
@@ -111,7 +111,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
 		//Open the database
 		String myPath = DB_PATH + DB_NAME;
 		myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-		
+
 		this.db = this.getReadableDatabase();
 	}
 
@@ -135,11 +135,11 @@ public class DataBaseHelper extends SQLiteOpenHelper
 	{
 
 	}
-	
+
 	public ArrayList<Ticket> getTickets()
 	{
 		ArrayList<Ticket> lstTickets = new ArrayList<Ticket>();
-		
+
 		Cursor cursor = db.rawQuery("SELECT * FROM tickets ORDER BY messagetime DESC", null);
 		while (cursor.moveToNext())
 		{
@@ -148,17 +148,17 @@ public class DataBaseHelper extends SQLiteOpenHelper
 			long tickettime = Long.parseLong(cursor.getString(cursor.getColumnIndex("tickettime")));
 			String message = cursor.getString(cursor.getColumnIndex("message"));
 			int provider = cursor.getInt(cursor.getColumnIndex("provider"));
-			
+
 			Ticket ticket = new Ticket(phonenumber, messagetime);
 			ticket.setTicketTimestamp(tickettime);
 			ticket.setMessage(message);
 			ticket.setProvider(provider);
-			
+
 			lstTickets.add(ticket);
 		}
 		return lstTickets;
 	}
-	
+
 	public boolean insertTicket(String phonenumber, long messagetime, String message, int provider, long tickettime)
 	{
 		try
@@ -169,12 +169,25 @@ public class DataBaseHelper extends SQLiteOpenHelper
 			values.put("tickettime", tickettime);
 			values.put("message", message);
 			values.put("provider", provider);
-			
+
 			db.replace("tickets", null, values);
 
 			return true;
 		}
 		catch (Exception e) { e.printStackTrace(); }
+		return false;
+	}
+
+	public boolean removeTicket(String phonenumber, long messagetime, String message)
+	{
+		try
+		{
+			db.delete("tickets", "phonenumber=? AND messagetime=? AND message=?", new String[] { phonenumber, Long.toString(messagetime), message });
+
+			return true;
+		}
+		catch (Exception e) { e.printStackTrace(); }
+
 		return false;
 	}
 }

@@ -23,14 +23,14 @@ import se.rebootit.android.tagbiljetter.models.*;
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
- 
+
 public class OrderOptions extends Activity implements OnClickListener, OnItemSelectedListener
 {
 	TransportCompany transportCompany;
 
 	List<TransportArea> areas;
 	List<TicketType> types;
-	
+
 	String number;
 	String message;
 
@@ -51,33 +51,29 @@ public class OrderOptions extends Activity implements OnClickListener, OnItemSel
 		txtAreaDescription = (TextView)findViewById(R.id.txtAreaDescription);
 		txtTypeDescription = (TextView)findViewById(R.id.txtTypeDescription);
 
-		if (transportCompany.getLogo() != null) {
-			int logo = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo(), "drawable","se.rebootit.android.tagbiljetter");
-			int logobg = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable","se.rebootit.android.tagbiljetter");
-			imgCompanyLogo.setImageResource(logo);
-			layoutHeader.setBackgroundResource((logobg == 0 ? R.drawable.header_background : logobg));
-		}
-		else {
-			imgCompanyLogo.setVisibility(ImageView.GONE);
-		}
+		int logo = Biljetter.getContext().getResources().getIdentifier((transportCompany.getLogo() != null ? transportCompany.getLogo() : "nologo"), "drawable","se.rebootit.android.tagbiljetter");
+		imgCompanyLogo.setImageResource(logo);
 
-		txtCompanyname.setTextColor(Color.parseColor(transportCompany.getHeaderColor()));
+		int logobg = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable","se.rebootit.android.tagbiljetter");
+		layoutHeader.setBackgroundResource((logobg == 0 ? R.drawable.header_background : logobg));
+
+		txtCompanyname.setTextColor(Color.parseColor(transportCompany.getTextColor()));
 		txtCompanyname.setText(transportCompany.getName());
 
 		Spinner spnArea = (Spinner)findViewById(R.id.spnArea);
 		ArrayAdapter<CharSequence> adapterArea = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 		adapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		areas = transportCompany.getTransportAreas();
 		for (TransportArea area : areas) {
 			adapterArea.add(area.getName());
 		}
 		spnArea.setAdapter(adapterArea);
-		
+
 		Spinner spnType = (Spinner)findViewById(R.id.spnType);
 		ArrayAdapter<CharSequence> adapterType = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 		adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		types = transportCompany.getTicketTypes();
 		for (TicketType type : types) {
 			adapterType.add(type.getName());
@@ -133,39 +129,39 @@ public class OrderOptions extends Activity implements OnClickListener, OnItemSel
 
 				this.number = transportCompany.getPhoneNumber();
 				this.message = transportCompany.getMessage(area, type);
-				
-				
+
+
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle("Bekräfta köp");
-				builder.setMessage("Detta kommer skicka \""+message+"\" till "+number+".");
-				builder.setPositiveButton("Ja", dialogClickListener);
-				builder.setNegativeButton("Nej", dialogClickListener);
+				builder.setTitle(getString(R.string.OrderOptions_confirmSendTitle));
+				builder.setMessage(getString(R.string.OrderOptions_confirmSendMessage).replace("%message%", message).replace("%number%", number));
+				builder.setPositiveButton(getString(R.string.yes), dialogClickListener);
+				builder.setNegativeButton(getString(R.string.no), dialogClickListener);
 				builder.setIcon(android.R.drawable.ic_dialog_alert);
 				builder.show();
-				
+
 				break;
 		}
 	}
-	
+
 	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
 	{
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
-					Toast.makeText(Biljetter.getContext(), "Skickar beställning!", Toast.LENGTH_LONG).show();
-					
+					Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_sending), Toast.LENGTH_LONG).show();
+
 					SmsManager sm = SmsManager.getDefault();
 					sm.sendTextMessage(number, null, message, null, null);
-					
+
 					setResult(RESULT_OK, getIntent());
-				
+
 					finish();
-					
+
 					break;
 
 				case DialogInterface.BUTTON_NEGATIVE:
-					Toast.makeText(Biljetter.getContext(), "Beställning avbruten!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_interrupted), Toast.LENGTH_SHORT).show();
 					break;
 			}
 		}
