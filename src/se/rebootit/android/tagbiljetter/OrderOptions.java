@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.View.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
-import android.telephony.gsm.*;
+import android.telephony.*;
 
 import se.rebootit.android.tagbiljetter.models.*;
 
