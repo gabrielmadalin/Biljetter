@@ -93,19 +93,6 @@ public class TicketView extends Activity
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
-		if (fromNotification) {
-			((MenuItem)menu.findItem(R.id.menuNotification)).setTitle(getString(R.string.TicketView_menu_notificationHide));
-		}
-		else {
-			((MenuItem)menu.findItem(R.id.menuNotification)).setTitle(getString(R.string.TicketView_menu_notificationShow));
-		}
-
-		return true;
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		switch (item.getItemId())

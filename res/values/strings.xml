@@ -15,8 +15,7 @@
 	<string name="TicketView_confirmRemoveTitle">Bekräfta borttagning</string>
 	<string name="TicketView_confirmRemoveMessage">Detta kommer bort biljetten permanent!</string>
 
-	<string name="TicketView_menu_notificationShow">Visa i statusfältet</string>
-	<string name="TicketView_menu_notificationHide">Göm från statusfältet</string>
+	<string name="TicketView_menu_notificationLock">Lås till statusfältet</string>
 	<string name="TicketView_menu_remove">Ta bort permanent</string>
 
 	<string name="TicketList_header">Biljetter</string>
