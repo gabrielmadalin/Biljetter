@@ -11,18 +11,21 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.util.*;
-import android.view.*;
+import android.view.View;
 import android.view.View.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
 
 import se.rebootit.android.tagbiljetter.models.*;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
+
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
-public class Order extends Activity
+public class Order extends SherlockActivity
 {
 	ArrayList<TransportCompany> lstCompanies = new ArrayList<TransportCompany>();
 	ListAdapter adapter = new OrderCompanyListAdapter(this.lstCompanies, this);

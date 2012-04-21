@@ -13,14 +13,17 @@ import android.content.pm.*;
 import android.net.*;
 import android.os.*;
 import android.text.method.*;
-import android.view.*;
+import android.view.View;
 import android.view.View.*;
 import android.widget.*;
+
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
 
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class About extends Activity implements OnClickListener
+public class About extends SherlockActivity implements OnClickListener
 {
 	DataParser dataParser = Biljetter.getDataParser();
 

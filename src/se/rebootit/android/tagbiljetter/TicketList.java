@@ -15,7 +15,7 @@ import android.content.SharedPreferences.*;
 import android.util.*;
 import android.net.*;
 import android.os.*;
-import android.view.*;
+import android.view.View;
 import android.view.ContextMenu.*;
 import android.view.View.*;
 import android.widget.*;
@@ -24,13 +24,16 @@ import android.widget.AdapterView.*;
 import se.rebootit.android.tagbiljetter.models.*;
 import se.rebootit.android.tagbiljetter.contact.*;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
+
 /**
  * TicketList is the class that lists all the found tickets in the users SMS inbox.
  *
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
-public class TicketList extends Activity implements OnClickListener
+public class TicketList extends SherlockActivity implements OnClickListener
 {
 	ArrayList<Ticket> lstTickets = new ArrayList<Ticket>();
 	TicketListAdapter adapter = new TicketListAdapter(this.lstTickets, this);
@@ -183,11 +186,12 @@ public class TicketList extends Activity implements OnClickListener
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.ticketlist, menu);
 
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

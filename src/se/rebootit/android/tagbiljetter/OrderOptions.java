@@ -12,7 +12,7 @@ import android.content.*;
 import android.graphics.*;
 import android.os.*;
 import android.util.*;
-import android.view.*;
+import android.view.View;
 import android.view.View.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
@@ -20,11 +20,14 @@ import android.telephony.gsm.*;
 
 import se.rebootit.android.tagbiljetter.models.*;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
+
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
-public class OrderOptions extends Activity implements OnClickListener, OnItemSelectedListener
+public class OrderOptions extends SherlockActivity implements OnClickListener, OnItemSelectedListener
 {
 	TransportCompany transportCompany;
 
