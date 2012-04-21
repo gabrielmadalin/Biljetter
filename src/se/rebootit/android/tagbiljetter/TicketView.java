@@ -11,15 +11,19 @@ import android.content.SharedPreferences.*;
 import android.graphics.*;
 import android.os.*;
 import android.util.*;
-import android.view.*;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.*;
 
 import se.rebootit.android.tagbiljetter.models.*;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
+
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class TicketView extends Activity
+public class TicketView extends SherlockActivity
 {
 	Ticket ticket;
 	DataParser dataParser = Biljetter.getDataParser();
@@ -86,7 +90,7 @@ public class TicketView extends Activity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.ticketview, menu);
 
 		return true;

@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/menuNotification"
 		android:title="@string/TicketView_menu_notificationLock"
-		android:icon="@android:drawable/ic_lock_lock" />
+		android:icon="@android:drawable/ic_lock_lock"
+		android:showAsAction="ifRoom|withText" />
 	<item android:id="@+id/menuRemove"
 		android:title="@string/TicketView_menu_remove"
 		android:icon="@android:drawable/ic_menu_delete" />

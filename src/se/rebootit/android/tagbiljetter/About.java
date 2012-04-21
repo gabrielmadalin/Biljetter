@@ -13,14 +13,17 @@ import android.content.pm.*;
 import android.net.*;
 import android.os.*;
 import android.text.method.*;
-import android.view.*;
+import android.view.View;
 import android.view.View.*;
 import android.widget.*;
+
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
 
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class About extends Activity implements OnClickListener
+public class About extends SherlockActivity implements OnClickListener
 {
 	DataParser dataParser = Biljetter.getDataParser();
 
@@ -47,6 +50,8 @@ public class About extends Activity implements OnClickListener
 			((TextView)findViewById(R.id.txtVersion)).setText(versionName+" (build "+versionNumber+")");
 		}
 		catch (Exception e) { }
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	public void onClick(View v)
@@ -80,6 +85,23 @@ public class About extends Activity implements OnClickListener
 				dialog.show();
 
 				break;
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				// app icon in action bar clicked; go home
+				Intent intent = new Intent(this, TicketList.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return true;
+
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 }

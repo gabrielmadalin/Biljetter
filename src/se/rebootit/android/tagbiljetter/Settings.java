@@ -5,23 +5,25 @@
 
 package se.rebootit.android.tagbiljetter;
 
-import android.app.*;
 import android.content.*;
 import android.content.SharedPreferences.*;
 import android.os.*;
 import android.util.*;
-import android.view.*;
+import android.view.View;
 import android.view.View.*;
 import android.widget.*;
 
 import java.text.*;
 import java.util.*;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
+
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
  
-public class Settings extends Activity implements OnClickListener
+public class Settings extends SherlockActivity implements OnClickListener
 {
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 
@@ -40,6 +42,8 @@ public class Settings extends Activity implements OnClickListener
 		long lngLastScan = sharedPreferences.getLong("lastmessage", 0);
 		String strLastScan = (lngLastScan > 0 ? new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(lngLastScan)) : getString(R.string.Settings_never));
 		((TextView)findViewById(R.id.txtLastScan)).setText(getString(R.string.Settings_lastscan)+" "+strLastScan);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 	public void onClick(View v)
@@ -60,6 +64,23 @@ public class Settings extends Activity implements OnClickListener
 
 				finish();
 				break;
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				// app icon in action bar clicked; go home
+				Intent intent = new Intent(this, TicketList.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return true;
+
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 }
