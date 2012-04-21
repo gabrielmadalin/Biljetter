@@ -5,7 +5,6 @@
 
 package se.rebootit.android.tagbiljetter;
 
-import android.app.*;
 import android.content.*;
 import android.content.SharedPreferences.*;
 import android.os.*;
@@ -43,6 +42,8 @@ public class Settings extends SherlockActivity implements OnClickListener
 		long lngLastScan = sharedPreferences.getLong("lastmessage", 0);
 		String strLastScan = (lngLastScan > 0 ? new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(lngLastScan)) : getString(R.string.Settings_never));
 		((TextView)findViewById(R.id.txtLastScan)).setText(getString(R.string.Settings_lastscan)+" "+strLastScan);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 	public void onClick(View v)

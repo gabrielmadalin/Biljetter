@@ -50,6 +50,8 @@ public class About extends SherlockActivity implements OnClickListener
 			((TextView)findViewById(R.id.txtVersion)).setText(versionName+" (build "+versionNumber+")");
 		}
 		catch (Exception e) { }
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	public void onClick(View v)
@@ -83,6 +85,23 @@ public class About extends SherlockActivity implements OnClickListener
 				dialog.show();
 
 				break;
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				// app icon in action bar clicked; go home
+				Intent intent = new Intent(this, TicketList.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return true;
+
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 }

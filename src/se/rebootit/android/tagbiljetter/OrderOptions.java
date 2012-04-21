@@ -87,6 +87,8 @@ public class OrderOptions extends SherlockActivity implements OnClickListener, O
 
 		spnArea.setOnItemSelectedListener(this);
 		spnType.setOnItemSelectedListener(this);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
@@ -121,6 +123,23 @@ public class OrderOptions extends SherlockActivity implements OnClickListener, O
     public void onNothingSelected(AdapterView parent) {
       // Do nothing.
     }
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				// app icon in action bar clicked; go home
+				Intent intent = new Intent(this, Order.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return true;
+
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 
 	public void onClick(View v)
 	{
