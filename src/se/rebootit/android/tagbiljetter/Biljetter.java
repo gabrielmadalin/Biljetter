@@ -43,18 +43,6 @@ public class Biljetter extends Application
 		}
 	}
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig)
-	{
-		super.onConfigurationChanged(newConfig);
-		if (locale != null)
-		{
-			newConfig.locale = locale;
-			Locale.setDefault(locale);
-			getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-		}
-	}
-
 	public static void setLocale(Activity activity)
 	{
 		Resources res = Biljetter.getContext().getResources();
