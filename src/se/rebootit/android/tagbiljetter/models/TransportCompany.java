@@ -42,7 +42,7 @@ public abstract class TransportCompany implements Parcelable
 
 		if (data[0] != null && data[1] != null) {
 			try {
-				return new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale("sv", "SE")).parse(data[1]+" "+data[0]).getTime();
+				return new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(data[1]+" "+data[0]).getTime();
 			} catch (Exception e) { e.printStackTrace(); }
 		}
 		return 0;

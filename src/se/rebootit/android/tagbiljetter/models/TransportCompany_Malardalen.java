@@ -36,7 +36,7 @@ public class TransportCompany_Malardalen extends TransportCompany
 
 		if (data[0] != null && data[1] != null) {
 			try {
-				return new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale("sv", "SE")).parse(data[0]+" "+data[1]).getTime();
+				return new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(data[0]+" "+data[1]).getTime();
 			} catch (Exception e) { e.printStackTrace(); }
 		}
 		return 0;
