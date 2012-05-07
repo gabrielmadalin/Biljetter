@@ -18,7 +18,6 @@
 			<TextView android:id="@+id/txtDescription"
 				android:text="@string/About_description"
 				android:textSize="20sp"
-				android:textColor="@color/white"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:layout_gravity="top|center_horizontal"
@@ -26,7 +25,6 @@
 				android:linksClickable="true" />
 
 			<Button android:id="@+id/btnWebpage"
-				style="?button"
 				android:text="@string/About_webpage"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
@@ -35,7 +33,6 @@
 				android:gravity="left|center_vertical" />
 
 			<Button android:id="@+id/btnDonate"
-				style="?button"
 				android:text="@string/About_donate"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
@@ -44,7 +41,6 @@
 				android:gravity="left|center_vertical" />
 
 			<Button android:id="@+id/btnChangelog"
-				style="?button"
 				android:text="@string/About_changelog"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
@@ -54,7 +50,6 @@
 
 			<TextView android:id="@+id/txtVersion"
 				android:textSize="15sp"
-				android:textColor="@color/white"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:gravity="right|center_vertical" />

@@ -19,7 +19,6 @@
 				android:text="@string/Settings_header_language"
 				android:textSize="20sp"
 				android:textStyle="bold"
-				android:textColor="@color/white"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent" />
 
@@ -31,18 +30,15 @@
 				android:text="@string/Settings_header_incoming"
 				android:textSize="20sp"
 				android:textStyle="bold"
-				android:textColor="@color/white"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent" />
 
 			<CheckBox android:id="@+id/chkNotification"
-				style="?checkbox"
 				android:text="@string/Settings_shownotification"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content" />
 
 			<CheckBox android:id="@+id/chkSilence"
-				style="?checkbox"
 				android:text="@string/Settings_silencesms"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
@@ -52,12 +48,10 @@
 				android:text="@string/Settings_header_ticketview"
 				android:textSize="20sp"
 				android:textStyle="bold"
-				android:textColor="@color/white"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent" />
 
 			<CheckBox android:id="@+id/chkKeepScreenOn"
-				style="?checkbox"
 				android:text="@string/Settings_keepscreenon"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
@@ -67,7 +61,6 @@
 				android:text="@string/Settings_header_scan"
 				android:textSize="20sp"
 				android:textStyle="bold"
-				android:textColor="@color/white"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent" />
 
@@ -77,14 +70,12 @@
 				android:layout_width="fill_parent" />
 
 			<CheckBox android:id="@+id/chkClearLastScan"
-				style="?checkbox"
 				android:text="@string/Settings_clearlastscan"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
 				android:paddingBottom="6sp" />
 
 			<Button android:id="@+id/btnSave"
-				style="?button"
 				android:text="@string/save"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent" />
