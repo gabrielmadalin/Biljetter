@@ -63,6 +63,7 @@
 	<string name="SmsReceiver_description">För resa %date%</string>
 
 	<string name="Order_header">Beställ biljett</string>
+	<string name="Order_favorites">Favoriter</string>
 
 	<string name="OrderOptions_header">Biljettalternativ</string>
 	<string name="OrderOptions_area">Område</string>
@@ -72,4 +73,6 @@
 	<string name="OrderOptions_confirmSendMessage">Detta kommer skicka \"%message%\" till %number%.</string>
 	<string name="OrderOptions_sending">Skickar beställning!</string>
 	<string name="OrderOptions_interrupted">Beställningen avbruten!</string>
+
+	<string name="Favorites_header">Favoriter</string>
 </resources>

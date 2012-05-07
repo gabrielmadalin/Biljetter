@@ -73,6 +73,12 @@
 				android:paddingRight="6sp"
 				android:paddingBottom="6sp" />
 
+			<CheckBox android:id="@+id/chkFavorite"
+				android:text="@string/OrderOptions_favorite"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:paddingBottom="6sp" />
+
 			<Button android:id="@+id/btnSend"
 				android:text="@string/OrderOptions_send"
 				android:layout_width="fill_parent"

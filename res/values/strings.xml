@@ -75,13 +75,17 @@
 	<string name="SmsReceiver_description">For travel %date%</string>
 
 	<string name="Order_header">Order ticket</string>
+	<string name="Order_favorites">Favorites</string>
 
 	<string name="OrderOptions_header">Ticket options</string>
 	<string name="OrderOptions_area">Area</string>
 	<string name="OrderOptions_type">Type</string>
+	<string name="OrderOptions_favorite">Save as favorite</string>
 	<string name="OrderOptions_send">Send order</string>
 	<string name="OrderOptions_confirmSendTitle">Confirm order</string>
 	<string name="OrderOptions_confirmSendMessage">This will send \"%message%\" to %number%.</string>
 	<string name="OrderOptions_sending">Sending ticket!</string>
 	<string name="OrderOptions_interrupted">Order canceled!</string>
+
+	<string name="Favorites_header">Favorites</string>
 </resources>

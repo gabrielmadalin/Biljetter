@@ -57,6 +57,15 @@ public class Order extends CustomActivity
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.order, menu);
+
+		return true;
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		// App icon in action bar clicked; go home
@@ -64,6 +73,12 @@ public class Order extends CustomActivity
 		{
 			Intent intent = new Intent(this, TicketList.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		}
+		else if (item.getItemId() == R.id.menuFavorites)
+		{
+			Intent intent = new Intent(this, Favorites.class);
 			startActivity(intent);
 			return true;
 		}
