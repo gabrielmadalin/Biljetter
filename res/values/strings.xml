@@ -12,7 +12,7 @@
 	<string name="TicketView_validto">Valid until:</string>
 	<string name="TicketView_sender">Sender:</string>
 	<string name="TicketView_confirmRemoveTitle">Confirm removal</string>
-	<string name="TicketView_confirmRemoveMessage">Poff</string>
+	<string name="TicketView_confirmRemoveMessage">This will remove the ticker permanent!</string>
 
 	<string name="TicketView_menu_notificationLock">Lock to notification area</string>
 	<string name="TicketView_menu_remove">Remove permanent</string>
