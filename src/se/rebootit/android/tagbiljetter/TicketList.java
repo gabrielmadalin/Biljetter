@@ -10,11 +10,11 @@ import java.io.*;
 
 import android.app.*;
 import android.content.*;
-import android.content.pm.*;
 import android.content.SharedPreferences.*;
 import android.util.*;
 import android.net.*;
 import android.os.*;
+import android.preference.*;
 import android.view.View;
 import android.view.ContextMenu.*;
 import android.view.View.*;
@@ -45,10 +45,15 @@ public class TicketList extends SherlockActivity implements OnClickListener
 	IntentFilter mIntentFilter;
 
 	boolean scanRunning = false;
+	String locale = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		// Set the app locale based on user settings
+		Biljetter.setLocale(this);
+		getSupportActionBar().setTitle(getString(R.string.TicketList_header));
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ticketlist);
 
@@ -215,6 +220,7 @@ public class TicketList extends SherlockActivity implements OnClickListener
 				return true;
 */
 			case R.id.settings:
+				this.locale = sharedPreferences.getString("locale", "");
 				intent = new Intent(this, Settings.class);
 				startActivity(intent);
 				return true;
@@ -230,8 +236,17 @@ public class TicketList extends SherlockActivity implements OnClickListener
 	}
 
 	@Override
-	protected void onResume() {
+	protected void onResume()
+	{
+		// Has the app locale changed? Then restart the view!
+		if (!(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("locale", "").equals(this.locale))) {
+			finish();
+			Intent myIntent = new Intent(TicketList.this, TicketList.class);
+			startActivity(myIntent);
+		}
+
 		registerReceiver(mIntentReceiver, mIntentFilter);
+
 		super.onResume();
 	}
 

@@ -3,9 +3,9 @@
 	package="se.rebootit.android.tagbiljetter"
 	android:versionCode="14"
 	android:versionName="1.5.5">
-	<application android:name="@string/app_name" android:label="@string/app_name" android:icon="@drawable/icon" android:theme="@style/Theme.Sherlock">
+	<application android:name="Biljetter" android:label="Biljetter" android:icon="@drawable/icon" android:theme="@style/Theme.Sherlock" android:configChanges="locale">
 		<activity android:name="TicketList" android:label="@string/TicketList_header">
-			<intent-filter android:label="@string/app_name">
+			<intent-filter android:label="Biljetter">
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>

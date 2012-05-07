@@ -14,6 +14,19 @@
 			android:layout_height="fill_parent"
 			android:paddingLeft="4sp"
 			android:paddingRight="4sp">
+
+			<TextView
+				android:text="@string/Settings_header_language"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:textColor="@color/white"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent" />
+
+			<Spinner android:id="@+id/spnLanguage"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
 			<TextView
 				android:text="@string/Settings_header_incoming"
 				android:textSize="20sp"

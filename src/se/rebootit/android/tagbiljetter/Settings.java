@@ -22,19 +22,26 @@ import com.actionbarsherlock.view.*;
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
- 
+
 public class Settings extends SherlockActivity implements OnClickListener
 {
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
+	String[] locales = { "", "en", "sv" };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings);
-		
+
 		((Button)findViewById(R.id.btnSave)).setOnClickListener(this);
-		
+
+		Spinner spinner = (Spinner) findViewById(R.id.spnLanguage);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
+		spinner.setSelection(Arrays.asList(locales).indexOf(sharedPreferences.getString("locale", "")));
+
 		((CheckBox)findViewById(R.id.chkSilence)).setChecked(sharedPreferences.getBoolean("silencesms", false));
 		((CheckBox)findViewById(R.id.chkNotification)).setChecked(sharedPreferences.getBoolean("shownotification", true));
 		((CheckBox)findViewById(R.id.chkKeepScreenOn)).setChecked(sharedPreferences.getBoolean("keepscreenon", false));
@@ -45,13 +52,18 @@ public class Settings extends SherlockActivity implements OnClickListener
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
-	
+
 	public void onClick(View v)
 	{
 		switch (v.getId())
 		{
 			case R.id.btnSave:
 				Editor e = sharedPreferences.edit();
+
+				// Save the users locale and set it
+				e.putString("locale", this.locales[((Spinner)findViewById(R.id.spnLanguage)).getSelectedItemPosition()]);
+				Biljetter.setLocale(this);
+
 				e.putBoolean("silencesms", ((CheckBox)findViewById(R.id.chkSilence)).isChecked());
 				e.putBoolean("shownotification", ((CheckBox)findViewById(R.id.chkNotification)).isChecked());
 				e.putBoolean("keepscreenon", ((CheckBox)findViewById(R.id.chkKeepScreenOn)).isChecked());
