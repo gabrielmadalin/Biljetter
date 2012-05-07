@@ -77,7 +77,8 @@ public class Biljetter extends Application
 	}
 
 	// Provides an easy way of getting the DataParser everythere in the application
-	public static DataParser getDataParser() {
+	public static DataParser getDataParser()
+	{
 		if (dataParser == null) {
 			dataParser = new DataParser();
 			dataParser.getCompanies();
@@ -87,13 +88,15 @@ public class Biljetter extends Application
 
 	public static DataBaseHelper getDataBaseHelper()
 	{
-		if (dbHelper == null) {
+		if (dbHelper == null)
+		{
 			try
 			{
 				dbHelper = new DataBaseHelper(context);
 				dbHelper.createDataBase();
 				dbHelper.openDataBase();
-			} catch (IOException ioe) {
+			}
+			catch (IOException ioe) {
 				throw new Error("Unable to create database");
 			}
 		}

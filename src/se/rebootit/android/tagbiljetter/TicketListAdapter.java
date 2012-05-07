@@ -21,23 +21,23 @@ import android.widget.AdapterView.*;
 
 public class TicketListAdapter extends BaseAdapter
 {
-	private List<Ticket> lstTickets;
-	private Context context;
-	private HashMap<Integer, Boolean> providers = new HashMap<Integer, Boolean>();
- 
+	private final List<Ticket> lstTickets;
+	private final Context context;
+	private final HashMap<Integer, Boolean> providers = new HashMap<Integer, Boolean>();
+
 	public TicketListAdapter(List<Ticket> lstTickets, Context context) {
 		this.lstTickets = lstTickets;
 		this.context = context;
 	}
- 
+
 	public int getCount() {
 		return lstTickets.size();
 	}
- 
+
 	public Ticket getItem(int position) {
 		return lstTickets.get(position);
 	}
- 
+
 	public long getItemId(int position) {
 		return position;
 	}
@@ -47,12 +47,12 @@ public class TicketListAdapter extends BaseAdapter
 		Ticket ticket = lstTickets.get(position);
 
 		LinearLayout itemLayout = (LinearLayout)LayoutInflater.from(context).inflate(R.layout.ticketlist_listitem, parent, false);
-		
+
 		TextView txtType = (TextView)itemLayout.findViewById(R.id.type);
 		TextView txtDate = (TextView)itemLayout.findViewById(R.id.date);
 		txtType.setText(DataParser.getCompanyName(ticket.getProvider()));
 		txtDate.setText(ticket.getTicketTimestampFormatted());
-		
+
 		// Make the valid tickets have yellow text color
 		if (ticket.getTicketTimestamp() > System.currentTimeMillis()) {
 			txtType.setTextColor(android.graphics.Color.YELLOW);
@@ -63,16 +63,11 @@ public class TicketListAdapter extends BaseAdapter
 		if (position % 2 == 1) {
 			itemLayout.setBackgroundColor(0x30558cd0);
 		}
-		
+
 		return itemLayout;
 	}
-	
+
 	public void setProvider(int key, boolean value) {
 		providers.put(key, value);
-	}
-	
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
 	}
 }

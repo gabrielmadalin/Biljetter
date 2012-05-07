@@ -13,16 +13,6 @@ import java.util.*;
  */
 public class TransportCompany_SL extends TransportCompany
 {
-	public TransportCompany_SL() { };
-
-	public TransportCompany_SL(String name, String phonenumber) {
-		super(name, phonenumber);
-	}
-
-	public String getMessage(TransportArea area, TicketType type) {
-		return type.getCode()+area.getCode();
-	}
-
 	public static final Parcelable.Creator<TransportCompany_SL> CREATOR = new Parcelable.Creator<TransportCompany_SL>()
 	{
 		public TransportCompany_SL createFromParcel(Parcel in) {
@@ -34,15 +24,26 @@ public class TransportCompany_SL extends TransportCompany
 		}
 	};
 
-    public int describeContents() {
-        return 0;
-    }
+	public TransportCompany_SL() { }
 
-    public void writeToParcel(Parcel out, int flags) {
-        super.writeToParcel(out, flags);
-    }
+	public TransportCompany_SL(String name, String phonenumber) {
+		super(name, phonenumber);
+	}
 
-    private TransportCompany_SL(Parcel in) {
-        super(in);
-    }
+	public String getMessage(TransportArea area, TicketType type) {
+		return type.getCode()+area.getCode();
+	}
+
+
+	public int describeContents() {
+		return 0;
+	}
+
+	public void writeToParcel(Parcel out, int flags) {
+		super.writeToParcel(out, flags);
+	}
+
+	private TransportCompany_SL(Parcel in) {
+		super(in);
+	}
 }

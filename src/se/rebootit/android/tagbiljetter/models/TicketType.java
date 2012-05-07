@@ -15,7 +15,15 @@ public class TicketType implements Parcelable
 	private String name;
 	private String description;
 
-	public TicketType() { }
+	public static final Parcelable.Creator<TicketType> CREATOR = new Parcelable.Creator<TicketType>() {
+		public TicketType createFromParcel(Parcel in) {
+			return new TicketType(in);
+		}
+
+		public TicketType[] newArray(int size) {
+			return new TicketType[size];
+		}
+	};
 
 	public TicketType(String code, String name, String description)
 	{
@@ -44,16 +52,6 @@ public class TicketType implements Parcelable
 		out.writeString(this.name);
 		out.writeString(this.description);
 	}
-
-	public static final Parcelable.Creator<TicketType> CREATOR = new Parcelable.Creator<TicketType>() {
-		public TicketType createFromParcel(Parcel in) {
-			return new TicketType(in);
-		}
-
-		public TicketType[] newArray(int size) {
-			return new TicketType[size];
-		}
-	};
 
 	public int describeContents() {
 		return 0;

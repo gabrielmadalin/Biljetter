@@ -29,11 +29,16 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 	private String address = "";
 	private String message = "";
 
-	/**
-	 * Creates an empty Ticket object
-	 */
-	public Ticket() { }
+	public static final Parcelable.Creator<Ticket> CREATOR = new Parcelable.Creator<Ticket>()
+	{
+		public Ticket createFromParcel(Parcel in) {
+			return new Ticket(in);
+		}
 
+		public Ticket[] newArray(int size) {
+			return new Ticket[size];
+		}
+	};
 
 	/**
 	 * Creates an empty Ticket object
@@ -49,7 +54,8 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 	 * @param	address		The address that the text message arrived from.
 	 * @param	timestamp	The timestamp when the text arrived.
 	 */
-	public Ticket(String address, long timestamp) {
+	public Ticket(String address, long timestamp)
+	{
 		this.address = address;
 		this.timestamp = timestamp;
 	}
@@ -68,7 +74,8 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 	/**
 	 * @return Formatted string with the arrival of the SMS.
 	 */
-	public String getTimestampFormatted() {
+	public String getTimestampFormatted()
+	{
 		if ("".equals(this.timestampformatted) && this.timestamp > 0) {
 			this.timestampformatted = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(this.timestamp));
 		}
@@ -77,7 +84,8 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 
 	public void setTicketTimestamp(long tickettimestamp) { this.tickettimestamp = tickettimestamp; }
 	public long getTicketTimestamp() { return this.tickettimestamp; }
-	public String getTicketTimestampFormatted() {
+	public String getTicketTimestampFormatted()
+	{
 		if ("".equals(this.tickettimestampformatted) && this.tickettimestamp > 0) {
 			this.tickettimestampformatted = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(this.tickettimestamp));
 		}
@@ -99,13 +107,11 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 	public void setMessage(String message) { this.message = message; }
 	public String getMessage() { return this.message; }
 
-
 	public void setProvider(int provider) { this.provider = provider; }
 	public int getProvider() { return this.provider; }
 
-
-
-	public int compare(Ticket ticket, Ticket ticket2) {
+	public int compare(Ticket ticket, Ticket ticket2)
+	{
 		if (((Ticket)ticket).getTimestamp() > ((Ticket)ticket2).getTimestamp()) {
 			return 1;
 		} else if (((Ticket)ticket).getTimestamp() < ((Ticket)ticket2).getTimestamp()) {
@@ -115,7 +121,8 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 		}
 	}
 
-	public int compareTo(Ticket ticket) {
+	public int compareTo(Ticket ticket)
+	{
 		if (((Ticket)ticket).getTimestamp() > getTimestamp()) {
 			return 1;
 		} else if (((Ticket)ticket).getTimestamp() < getTimestamp()) {
@@ -126,15 +133,17 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (!(obj instanceof Ticket))
-		return false;
+			return false;
 
 		return (((Ticket)obj).hashCode() == hashCode() ? true : false);
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		int code = 17;
 		code = 31*code + (int)(timestamp ^ (timestamp >> 32));
 		code = 31*code + address.hashCode();
@@ -144,7 +153,8 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 		return code;
 	}
 
-	private Ticket(Parcel in) {
+	private Ticket(Parcel in)
+	{
 		this.provider = in.readInt();
 		this.timestamp = in.readLong();
 		this.tickettimestamp = in.readLong();
@@ -154,7 +164,8 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 		this.message = in.readString();
 	}
 
-	public void writeToParcel(Parcel out, int flags) {
+	public void writeToParcel(Parcel out, int flags)
+	{
 		out.writeInt(this.provider);
 		out.writeLong(this.timestamp);
 		out.writeLong(this.tickettimestamp);
@@ -164,18 +175,6 @@ public class Ticket implements Parcelable, Serializable, Comparable<Ticket>
 		out.writeString(this.message);
 	}
 
-	// this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
-	public static final Parcelable.Creator<Ticket> CREATOR = new Parcelable.Creator<Ticket>() {
-		public Ticket createFromParcel(Parcel in) {
-		return new Ticket(in);
-		}
-
-		public Ticket[] newArray(int size) {
-			return new Ticket[size];
-		}
-	};
-
-	// 99.9% of the time you can just ignore this
 	public int describeContents() {
 		return 0;
 	}

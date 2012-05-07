@@ -57,51 +57,45 @@ public class About extends SherlockActivity implements OnClickListener
 	public void onClick(View v)
 	{
 		Intent intent;
-		switch(v.getId())
+
+		// Open our github page in the web browser
+		if (v.getId() == R.id.btnWebpage)
 		{
-			// Open our github page in the web browser
-			case R.id.btnWebpage:
-				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/erifre/Biljetter"));
-				startActivity(intent);
-				break;
+			intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/erifre/Biljetter"));
+			startActivity(intent);
+		}
+		// Open our flattr page in the web browser
+		else if (v.getId() == R.id.btnDonate)
+		{
+			intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://flattr.com/thing/371293"));
+			startActivity(intent);
+		}
+		// Open our Wizard
+		else if (v.getId() == R.id.btnChangelog)
+		{
+			Dialog dialog = new Dialog(this);
+			dialog.setCancelable(true);
+			dialog.setContentView(R.layout.changelog);
+			dialog.setTitle(getString(R.string.About_changelog));
 
-			// Open our flattr page in the web browser
-			case R.id.btnDonate:
-				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://flattr.com/thing/371293"));
-				startActivity(intent);
-				break;
+			TextView txtChangelog = (TextView)dialog.findViewById(R.id.txtChangelog);
+			txtChangelog.setText(dataParser.readAsset("changelog.txt", this).toString());
 
-			// Open our Wizard
-			case R.id.btnChangelog:
-
-				Dialog dialog = new Dialog(this);
-				dialog.setCancelable(true);
-				dialog.setContentView(R.layout.changelog);
-				dialog.setTitle(getString(R.string.About_changelog));
-
-				TextView txtChangelog = (TextView)dialog.findViewById(R.id.txtChangelog);
-				txtChangelog.setText(dataParser.readAsset("changelog.txt", this).toString());
-
-				dialog.show();
-
-				break;
+			dialog.show();
 		}
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		switch (item.getItemId())
+		// App icon in action bar clicked; go home
+		if (item.getItemId() == android.R.id.home)
 		{
-			case android.R.id.home:
-				// app icon in action bar clicked; go home
-				Intent intent = new Intent(this, TicketList.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(item);
+			Intent intent = new Intent(this, TicketList.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
 		}
+		return super.onOptionsItemSelected(item);
 	}
 }

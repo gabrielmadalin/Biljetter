@@ -37,11 +37,9 @@ public class DataBaseHelper extends SQLiteOpenHelper
 	public void createDataBase() throws IOException
 	{
 		boolean dbExist = checkDataBase();
-		//dbExist = false;
 
-		if (dbExist) {
-			//do nothing - database already exist
-		} else {
+		if (!dbExist)
+		{
 			// By calling this method and empty database will be created into the default system path
 			// of your application so we are gonna be able to overwrite that database with our database.
 			this.getReadableDatabase();
@@ -66,7 +64,8 @@ public class DataBaseHelper extends SQLiteOpenHelper
 		{
 			String myPath = DB_PATH + DB_NAME;
 			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-		} catch(SQLiteException e) {
+		}
+		catch (SQLiteException e) {
 			//database does't exist yet.
 		}
 
@@ -74,7 +73,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
 			checkDB.close();
 		}
 
-		return checkDB != null ? true : false;
+		return checkDB == null ? false : true;
 	}
 
 	/**
@@ -118,23 +117,17 @@ public class DataBaseHelper extends SQLiteOpenHelper
 	@Override
 	public synchronized void close()
 	{
-		if(myDataBase != null)
-		myDataBase.close();
+		if (myDataBase != null)
+			myDataBase.close();
 
 		super.close();
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase db)
-	{
-
-	}
+	public void onCreate(SQLiteDatabase db) { }
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-	{
-
-	}
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
 
 	public ArrayList<Ticket> getTickets()
 	{

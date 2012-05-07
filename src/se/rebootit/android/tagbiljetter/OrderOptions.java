@@ -39,6 +39,28 @@ public class OrderOptions extends SherlockActivity implements OnClickListener, O
 
 	TextView txtAreaDescription, txtTypeDescription;
 
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
+	{
+		@Override
+		public void onClick(DialogInterface dialog, int which)
+		{
+			if (which == DialogInterface.BUTTON_POSITIVE)
+			{
+				Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_sending), Toast.LENGTH_LONG).show();
+
+				SmsManager sm = SmsManager.getDefault();
+				sm.sendTextMessage(number, null, message, null, null);
+
+				setResult(RESULT_OK, getIntent());
+
+				finish();
+			}
+			else if (which == DialogInterface.BUTTON_NEGATIVE) {
+				Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_interrupted), Toast.LENGTH_SHORT).show();
+			}
+		}
+	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -54,11 +76,11 @@ public class OrderOptions extends SherlockActivity implements OnClickListener, O
 		txtAreaDescription = (TextView)findViewById(R.id.txtAreaDescription);
 		txtTypeDescription = (TextView)findViewById(R.id.txtTypeDescription);
 
-		int logo = Biljetter.getContext().getResources().getIdentifier((transportCompany.getLogo() != null ? transportCompany.getLogo() : "nologo"), "drawable","se.rebootit.android.tagbiljetter");
+		int logo = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo() == null ? "nologo" : transportCompany.getLogo(), "drawable","se.rebootit.android.tagbiljetter");
 		imgCompanyLogo.setImageResource(logo);
 
 		int logobg = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable","se.rebootit.android.tagbiljetter");
-		layoutHeader.setBackgroundResource((logobg == 0 ? R.drawable.header_background : logobg));
+		layoutHeader.setBackgroundResource(logobg == 0 ? R.drawable.header_background : logobg);
 
 		txtCompanyname.setTextColor(Color.parseColor(transportCompany.getTextColor()));
 		txtCompanyname.setText(transportCompany.getName());
@@ -94,98 +116,65 @@ public class OrderOptions extends SherlockActivity implements OnClickListener, O
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
 	{
 		String description;
-		switch (parent.getId())
+		if (parent.getId() == R.id.spnArea)
 		{
-			case R.id.spnArea:
-				description = areas.get(pos).getDescription();
-				if ("".equals(description) || description == null) {
-					txtAreaDescription.setVisibility(TextView.GONE);
-				}
-				else {
-					txtAreaDescription.setText(description);
-					txtAreaDescription.setVisibility(TextView.VISIBLE);
-				}
-				break;
-
-			case R.id.spnType:
-				description = types.get(pos).getDescription();
-				if ("".equals(description) || description == null) {
-					txtTypeDescription.setVisibility(TextView.GONE);
-				}
-				else {
-					txtTypeDescription.setText(description);
-					txtTypeDescription.setVisibility(TextView.VISIBLE);
-				}
-				break;
+			description = areas.get(pos).getDescription();
+			if ("".equals(description) || description == null) {
+				txtAreaDescription.setVisibility(TextView.GONE);
+			}
+			else {
+				txtAreaDescription.setText(description);
+				txtAreaDescription.setVisibility(TextView.VISIBLE);
+			}
 		}
-    }
+		else if (parent.getId() == R.id.spnType)
+		{
+			description = types.get(pos).getDescription();
+			if ("".equals(description) || description == null) {
+				txtTypeDescription.setVisibility(TextView.GONE);
+			}
+			else {
+				txtTypeDescription.setText(description);
+				txtTypeDescription.setVisibility(TextView.VISIBLE);
+			}
+		}
+	}
 
-    public void onNothingSelected(AdapterView parent) {
-      // Do nothing.
-    }
+	public void onNothingSelected(AdapterView parent) {
+		// Do nothing.
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		switch (item.getItemId())
+		// App icon in action bar clicked; go home
+		if (item.getItemId() == android.R.id.home)
 		{
-			case android.R.id.home:
-				// app icon in action bar clicked; go home
-				Intent intent = new Intent(this, Order.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(item);
+			Intent intent = new Intent(this, Order.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void onClick(View v)
 	{
-		switch (v.getId())
+		if (v.getId() == R.id.btnSend)
 		{
-			case R.id.btnSend:
-				TransportArea area = areas.get(((Spinner)findViewById(R.id.spnArea)).getSelectedItemPosition());
-				TicketType type = types.get(((Spinner)findViewById(R.id.spnType)).getSelectedItemPosition());
+			TransportArea area = areas.get(((Spinner)findViewById(R.id.spnArea)).getSelectedItemPosition());
+			TicketType type = types.get(((Spinner)findViewById(R.id.spnType)).getSelectedItemPosition());
 
-				this.number = transportCompany.getPhoneNumber();
-				this.message = transportCompany.getMessage(area, type);
+			this.number = transportCompany.getPhoneNumber();
+			this.message = transportCompany.getMessage(area, type);
 
-
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle(getString(R.string.OrderOptions_confirmSendTitle));
-				builder.setMessage(getString(R.string.OrderOptions_confirmSendMessage).replace("%message%", message).replace("%number%", number));
-				builder.setPositiveButton(getString(R.string.yes), dialogClickListener);
-				builder.setNegativeButton(getString(R.string.no), dialogClickListener);
-				builder.setIcon(android.R.drawable.ic_dialog_alert);
-				builder.show();
-
-				break;
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(getString(R.string.OrderOptions_confirmSendTitle));
+			builder.setMessage(getString(R.string.OrderOptions_confirmSendMessage).replace("%message%", message).replace("%number%", number));
+			builder.setPositiveButton(getString(R.string.yes), dialogClickListener);
+			builder.setNegativeButton(getString(R.string.no), dialogClickListener);
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.show();
 		}
 	}
-
-	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
-	{
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			switch (which) {
-				case DialogInterface.BUTTON_POSITIVE:
-					Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_sending), Toast.LENGTH_LONG).show();
-
-					SmsManager sm = SmsManager.getDefault();
-					sm.sendTextMessage(number, null, message, null, null);
-
-					setResult(RESULT_OK, getIntent());
-
-					finish();
-
-					break;
-
-				case DialogInterface.BUTTON_NEGATIVE:
-					Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_interrupted), Toast.LENGTH_SHORT).show();
-					break;
-			}
-		}
-	};
 }

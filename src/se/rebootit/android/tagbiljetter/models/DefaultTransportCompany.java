@@ -13,12 +13,6 @@ import java.util.*;
  */
 public class DefaultTransportCompany extends TransportCompany
 {
-	public DefaultTransportCompany() { }
-
-	public DefaultTransportCompany(String name, String phonenumber) {
-		super(name, phonenumber);
-	}
-
 	public static final Parcelable.Creator<DefaultTransportCompany> CREATOR = new Parcelable.Creator<DefaultTransportCompany>()
 	{
 		public DefaultTransportCompany createFromParcel(Parcel in) {
@@ -30,15 +24,21 @@ public class DefaultTransportCompany extends TransportCompany
 		}
 	};
 
-    public int describeContents() {
-        return 0;
-    }
+	public DefaultTransportCompany() { }
 
-    public void writeToParcel(Parcel out, int flags) {
-        super.writeToParcel(out, flags);
-    }
+	public DefaultTransportCompany(String name, String phonenumber) {
+		super(name, phonenumber);
+	}
 
-    private DefaultTransportCompany(Parcel in) {
-        super(in);
-    }
+	public int describeContents() {
+		return 0;
+	}
+
+	public void writeToParcel(Parcel out, int flags) {
+		super.writeToParcel(out, flags);
+	}
+
+	private DefaultTransportCompany(Parcel in) {
+		super(in);
+	}
 }

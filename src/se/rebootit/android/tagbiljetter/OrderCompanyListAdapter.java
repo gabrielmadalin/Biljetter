@@ -24,8 +24,8 @@ import se.rebootit.android.tagbiljetter.models.*;
 
 public class OrderCompanyListAdapter extends BaseAdapter
 {
-	private List<TransportCompany> lstCompanies;
-	private Context context;
+	private final List<TransportCompany> lstCompanies;
+	private final Context context;
  
 	public OrderCompanyListAdapter(List<TransportCompany> lstCompanies, Context context) {
 		this.lstCompanies = lstCompanies;
@@ -56,11 +56,11 @@ public class OrderCompanyListAdapter extends BaseAdapter
 			ImageView imgLogo = (ImageView)itemLayout.findViewById(R.id.companylogo);
 			TextView txtName = (TextView)itemLayout.findViewById(R.id.companyname);
 
-			int logo = context.getResources().getIdentifier((transportCompany.getLogo() != null ? transportCompany.getLogo() : "nologo"), "drawable","se.rebootit.android.tagbiljetter");
+			int logo = context.getResources().getIdentifier(transportCompany.getLogo() == null ? "nologo" : transportCompany.getLogo(), "drawable","se.rebootit.android.tagbiljetter");
 			imgLogo.setImageResource(logo);
 			
 			int logobg = context.getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable","se.rebootit.android.tagbiljetter");
-			itemLayout.setBackgroundResource((logobg == 0 ? R.drawable.header_background : logobg));
+			itemLayout.setBackgroundResource(logobg == 0 ? R.drawable.header_background : logobg);
 
 			txtName.setTextColor(Color.parseColor(transportCompany.getTextColor()));
 			txtName.setText(transportCompany.getName());
@@ -73,10 +73,5 @@ public class OrderCompanyListAdapter extends BaseAdapter
 			itemLayout.setVisibility(LinearLayout.GONE);
 			return itemLayout;
 		}
-	}
-	
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
 	}
 }

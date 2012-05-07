@@ -35,6 +35,13 @@ import com.actionbarsherlock.view.*;
 
 public class TicketList extends SherlockActivity implements OnClickListener
 {
+	private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateList();
+		}
+	};
+
 	ArrayList<Ticket> lstTickets = new ArrayList<Ticket>();
 	TicketListAdapter adapter = new TicketListAdapter(this.lstTickets, this);
 
@@ -91,29 +98,21 @@ public class TicketList extends SherlockActivity implements OnClickListener
 
 	public void onClick(View v)
 	{
-		switch(v.getId())
+		if (v.getId() == R.id.btnScan) {
+			scanForTickets(true, true);
+		}
+		else if (v.getId() == R.id.btnOrder)
 		{
-			case R.id.btnScan:
-				scanForTickets(true, true);
-				break;
-
-			case R.id.btnOrder:
-				Intent intent = new Intent(this, Order.class);
-				startActivity(intent);
-				break;
+			Intent intent = new Intent(this, Order.class);
+			startActivity(intent);
 		}
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		switch(requestCode)
-		{
-			case 0:
-				if (resultCode == RESULT_OK) {
-					updateList();
-				}
-				break;
+		if (requestCode == 0 && resultCode == RESULT_OK) {
+			updateList();
 		}
 	}
 
@@ -275,11 +274,4 @@ public class TicketList extends SherlockActivity implements OnClickListener
 			updateList();
 		}
 	}
-
-	private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			updateList();
-		}
-	};
 }

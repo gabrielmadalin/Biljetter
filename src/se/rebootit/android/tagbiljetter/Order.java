@@ -59,30 +59,22 @@ public class Order extends SherlockActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		switch (item.getItemId())
+		// App icon in action bar clicked; go home
+		if (item.getItemId() == android.R.id.home)
 		{
-			case android.R.id.home:
-				// app icon in action bar clicked; go home
-				Intent intent = new Intent(this, TicketList.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(item);
+			Intent intent = new Intent(this, TicketList.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		switch(requestCode)
-		{
-			case 0:
-				if (resultCode == RESULT_OK) {
-					finish();
-				}
-				break;
+		if (requestCode == 0 && resultCode == RESULT_OK) {
+			finish();
 		}
 	}
 }

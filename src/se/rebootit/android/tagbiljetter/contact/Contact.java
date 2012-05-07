@@ -25,10 +25,10 @@ import se.rebootit.android.tagbiljetter.models.*;
 public class Contact extends Activity implements OnClickListener
 {
 	TransportCompany transportCompany;
-	
+
 	List<Reason> lstReasons = new ArrayList<Reason>();
 	Reason reason;
-	
+
 	Spinner spnReason;
 	TimePicker timePicker;
 	DatePicker datePicker;
@@ -44,7 +44,7 @@ public class Contact extends Activity implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact);
-		
+
 		Intent intent = getIntent();
 		this.transportCompany = (TransportCompany)intent.getParcelableExtra("company");
 
@@ -52,15 +52,16 @@ public class Contact extends Activity implements OnClickListener
 		TextView txtCompanyname = (TextView)findViewById(R.id.companyname);
 		ImageView imgCompanyLogo = (ImageView)findViewById(R.id.companylogo);
 
-		if (transportCompany.getLogo() != null) {
+		if (transportCompany.getLogo() == null) {
+			imgCompanyLogo.setVisibility(ImageView.GONE);
+		}
+		else
+		{
 			int logo = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo(), "drawable","se.rebootit.android.tagbiljetter");
 			imgCompanyLogo.setImageResource(logo);
 
 			int logobg = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable","se.rebootit.android.tagbiljetter");
-			layoutHeader.setBackgroundResource((logobg == 0 ? R.drawable.header_background : logobg));
-		}
-		else {
-			imgCompanyLogo.setVisibility(ImageView.GONE);
+			layoutHeader.setBackgroundResource(logobg == 0 ? R.drawable.header_background : logobg);
 		}
 
 		txtCompanyname.setTextColor(Color.parseColor(transportCompany.getTextColor()));
@@ -71,7 +72,7 @@ public class Contact extends Activity implements OnClickListener
 		datePicker = (DatePicker)findViewById(R.id.datePicker);
 		timePicker = (TimePicker)findViewById(R.id.timePicker);
 		txtPreview = (TextView)findViewById(R.id.txtPreview);
-		
+
 		timePicker.setIs24HourView(true);
 
 		lstReasons.add(new Reason("Otrevlig personal", "Hej!\n\nPå linje %line% i %city% med avgångstid %date% kl. %time% blev jag otrevligt bemött av er personal. Jag hoppas att ni kan framföra detta till berörd part.\n\nMed vänliga hälsningar"));
@@ -169,28 +170,25 @@ public class Contact extends Activity implements OnClickListener
 
 	public void onClick(View v)
 	{
-		switch (v.getId())
-		{
-			case R.id.btnNext:
-				page(page+1);
-				break;
-
-			case R.id.btnBack:
-				page(page-1);
-				break;
+		if (v.getId() == R.id.btnNext) {
+			page(page+1);
+		}
+		else if (v.getId() == R.id.btnBack) {
+			page(page-1);
 		}
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		{
 			page(page-1);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
 
-	
 	public String formatTimeAndDate(int input) {
 		return (input > 9 ? input : "0"+input).toString();
 	}

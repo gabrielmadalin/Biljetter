@@ -50,49 +50,45 @@ public class Settings extends SherlockActivity implements OnClickListener
 		String strLastScan = (lngLastScan > 0 ? new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(lngLastScan)) : getString(R.string.Settings_never));
 		((TextView)findViewById(R.id.txtLastScan)).setText(getString(R.string.Settings_lastscan)+" "+strLastScan);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	public void onClick(View v)
 	{
-		switch (v.getId())
+		if (v.getId() == R.id.btnSave)
 		{
-			case R.id.btnSave:
-				Editor e = sharedPreferences.edit();
+			Editor e = sharedPreferences.edit();
 
-				// Save the users locale and set it
-				e.putString("locale", this.locales[((Spinner)findViewById(R.id.spnLanguage)).getSelectedItemPosition()]);
-				Biljetter.setLocale(this);
+			// Save the users locale and set it
+			e.putString("locale", this.locales[((Spinner)findViewById(R.id.spnLanguage)).getSelectedItemPosition()]);
+			Biljetter.setLocale(this);
 
-				e.putBoolean("silencesms", ((CheckBox)findViewById(R.id.chkSilence)).isChecked());
-				e.putBoolean("shownotification", ((CheckBox)findViewById(R.id.chkNotification)).isChecked());
-				e.putBoolean("keepscreenon", ((CheckBox)findViewById(R.id.chkKeepScreenOn)).isChecked());
+			e.putBoolean("silencesms", ((CheckBox)findViewById(R.id.chkSilence)).isChecked());
+			e.putBoolean("shownotification", ((CheckBox)findViewById(R.id.chkNotification)).isChecked());
+			e.putBoolean("keepscreenon", ((CheckBox)findViewById(R.id.chkKeepScreenOn)).isChecked());
 
-				if (((CheckBox)findViewById(R.id.chkClearLastScan)).isChecked()) {
-					e.remove("lastmessage");
-				}
+			if (((CheckBox)findViewById(R.id.chkClearLastScan)).isChecked()) {
+				e.remove("lastmessage");
+			}
 
-				e.commit();
+			e.commit();
 
-				finish();
-				break;
+			finish();
 		}
 	}
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		switch (item.getItemId())
+		// App icon in action bar clicked; go home
+		if (item.getItemId() == android.R.id.home)
 		{
-			case android.R.id.home:
-				// app icon in action bar clicked; go home
-				Intent intent = new Intent(this, TicketList.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(item);
+			Intent intent = new Intent(this, TicketList.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
 		}
+		return super.onOptionsItemSelected(item);
 	}
 }

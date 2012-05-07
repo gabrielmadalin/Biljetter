@@ -15,7 +15,15 @@ public class TransportArea implements Parcelable
 	private String name;
 	private String description;
 
-	public TransportArea() { }
+	public static final Parcelable.Creator<TransportArea> CREATOR = new Parcelable.Creator<TransportArea>() {
+		public TransportArea createFromParcel(Parcel in) {
+			return new TransportArea(in);
+		}
+
+		public TransportArea[] newArray(int size) {
+			return new TransportArea[size];
+		}
+	};
 
 	public TransportArea(String code, String name, String description)
 	{
@@ -45,15 +53,6 @@ public class TransportArea implements Parcelable
 		out.writeString(this.description);
 	}
 
-	public static final Parcelable.Creator<TransportArea> CREATOR = new Parcelable.Creator<TransportArea>() {
-		public TransportArea createFromParcel(Parcel in) {
-			return new TransportArea(in);
-		}
-
-		public TransportArea[] newArray(int size) {
-			return new TransportArea[size];
-		}
-	};
 
 	public int describeContents() {
 		return 0;

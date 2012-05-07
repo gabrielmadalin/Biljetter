@@ -179,7 +179,7 @@ public class DataParser
 	
 	private class TransportCompanyHandler extends DefaultHandler
 	{
-		private ArrayList<TransportCompany> companies = new ArrayList<TransportCompany>();
+		private final ArrayList<TransportCompany> companies = new ArrayList<TransportCompany>();
 		private TransportCompany currentCompany;
 		private StringBuilder builder;
 		
@@ -327,7 +327,7 @@ public class DataParser
 			try {
 				if (ois != null) ois.close();
 				if (fis != null) fis.close();
-				if (keep == false) suspend_f.delete();
+				if (!keep) suspend_f.delete();
 			}
 			catch (Exception e) { }
 		}
