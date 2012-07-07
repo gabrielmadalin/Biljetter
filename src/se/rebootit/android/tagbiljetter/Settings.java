@@ -23,10 +23,11 @@ import com.actionbarsherlock.view.*;
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
-public class Settings extends SherlockActivity implements OnClickListener
+public class Settings extends CustomActivity implements OnClickListener
 {
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 	String[] locales = { "", "en", "sv" };
+	Integer[] themes = { com.actionbarsherlock.R.style.Theme_Sherlock_Light_DarkActionBar, com.actionbarsherlock.R.style.Theme_Sherlock_Light, com.actionbarsherlock.R.style.Theme_Sherlock };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -36,11 +37,19 @@ public class Settings extends SherlockActivity implements OnClickListener
 
 		((Button)findViewById(R.id.btnSave)).setOnClickListener(this);
 
-		Spinner spinner = (Spinner) findViewById(R.id.spnLanguage);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
-		spinner.setSelection(Arrays.asList(locales).indexOf(sharedPreferences.getString("locale", "")));
+		// The spinner for language selection
+		Spinner spnLanguages = (Spinner)findViewById(R.id.spnLanguage);
+		ArrayAdapter<CharSequence> adapterLanguages = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_item);
+		adapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spnLanguages.setAdapter(adapterLanguages);
+		spnLanguages.setSelection(Arrays.asList(locales).indexOf(sharedPreferences.getString("locale", "")));
+
+		// The spinner for theme selection
+		Spinner spnThemes = (Spinner)findViewById(R.id.spnThemes);
+		ArrayAdapter<CharSequence> adapterThemes = ArrayAdapter.createFromResource(this, R.array.themes, android.R.layout.simple_spinner_item);
+		adapterThemes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spnThemes.setAdapter(adapterThemes);
+		spnThemes.setSelection(Arrays.asList(this.themes).indexOf(sharedPreferences.getInt("theme", 0)));
 
 		((CheckBox)findViewById(R.id.chkSilence)).setChecked(sharedPreferences.getBoolean("silencesms", false));
 		((CheckBox)findViewById(R.id.chkNotification)).setChecked(sharedPreferences.getBoolean("shownotification", true));
@@ -59,9 +68,12 @@ public class Settings extends SherlockActivity implements OnClickListener
 		{
 			Editor e = sharedPreferences.edit();
 
-			// Save the users locale and set it
+			// Save the locale selection
 			e.putString("locale", this.locales[((Spinner)findViewById(R.id.spnLanguage)).getSelectedItemPosition()]);
 			Biljetter.setLocale(this);
+
+			// Save the theme selection
+			e.putInt("theme", this.themes[((Spinner)findViewById(R.id.spnThemes)).getSelectedItemPosition()]);
 
 			e.putBoolean("silencesms", ((CheckBox)findViewById(R.id.chkSilence)).isChecked());
 			e.putBoolean("shownotification", ((CheckBox)findViewById(R.id.chkNotification)).isChecked());
@@ -73,10 +85,10 @@ public class Settings extends SherlockActivity implements OnClickListener
 
 			e.commit();
 
+			setResult(RESULT_OK, getIntent());
 			finish();
 		}
 	}
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)

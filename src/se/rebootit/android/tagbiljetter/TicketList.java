@@ -33,7 +33,7 @@ import com.actionbarsherlock.view.*;
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
-public class TicketList extends SherlockActivity implements OnClickListener
+public class TicketList extends CustomActivity implements OnClickListener
 {
 	private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
 		@Override
@@ -57,12 +57,11 @@ public class TicketList extends SherlockActivity implements OnClickListener
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		// Set the app locale based on user settings
-		Biljetter.setLocale(this);
-		getSupportActionBar().setTitle(getString(R.string.TicketList_header));
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ticketlist);
+
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.TicketList_header));
 
 		// Listen for messages from SmsReceiver
 		mIntentFilter = new IntentFilter();
@@ -113,6 +112,11 @@ public class TicketList extends SherlockActivity implements OnClickListener
 	{
 		if (requestCode == 0 && resultCode == RESULT_OK) {
 			updateList();
+		}
+		else if (requestCode == 1 && resultCode == RESULT_OK) {
+			Intent intent = new Intent(this, TicketList.class);
+			startActivity(intent);
+			finish();
 		}
 	}
 
@@ -221,7 +225,7 @@ public class TicketList extends SherlockActivity implements OnClickListener
 			case R.id.settings:
 				this.locale = sharedPreferences.getString("locale", "");
 				intent = new Intent(this, Settings.class);
-				startActivity(intent);
+				startActivityForResult(intent, 1);
 				return true;
 
 			case R.id.about:

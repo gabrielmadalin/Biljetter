@@ -23,7 +23,7 @@ import com.actionbarsherlock.view.*;
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class TicketView extends SherlockActivity
+public class TicketView extends CustomActivity
 {
 	Ticket ticket;
 	DataParser dataParser = Biljetter.getDataParser();

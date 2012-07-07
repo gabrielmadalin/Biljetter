@@ -27,7 +27,7 @@ import com.actionbarsherlock.view.*;
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
-public class OrderOptions extends SherlockActivity implements OnClickListener, OnItemSelectedListener
+public class OrderOptions extends CustomActivity implements OnClickListener, OnItemSelectedListener
 {
 	TransportCompany transportCompany;
 

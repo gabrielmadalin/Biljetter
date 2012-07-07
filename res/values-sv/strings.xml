@@ -49,6 +49,10 @@
 	<string name="Settings_never">Aldrig</string>
 	<string name="Settings_clearlastscan">Scanna om alla sms</string>
 
+	<string name="Settings_themelightdark">Ljust med mörkt åtgärdsfält</string>
+	<string name="Settings_themelight">Ljust</string>
+	<string name="Settings_themedark">Mörkt</string>
+
 	<string name="About_header">Om Biljetter</string>
 	<string name="About_description">Det här är en app som hanterar dina sms-biljetter från både tåg- och bussbolag. Allt samlat på ett och samma ställe!\n\nAppen är släppt under GPL 3 och support och hela källkoden finns tillgängligt på GitHub.</string>
 	<string name="About_webpage">Webbplats</string>

@@ -25,7 +25,7 @@ import com.actionbarsherlock.view.*;
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
-public class Order extends SherlockActivity
+public class Order extends CustomActivity
 {
 	ArrayList<TransportCompany> lstCompanies = new ArrayList<TransportCompany>();
 	ListAdapter adapter = new OrderCompanyListAdapter(this.lstCompanies, this);

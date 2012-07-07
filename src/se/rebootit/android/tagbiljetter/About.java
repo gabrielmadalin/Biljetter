@@ -23,7 +23,7 @@ import com.actionbarsherlock.view.*;
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class About extends SherlockActivity implements OnClickListener
+public class About extends CustomActivity implements OnClickListener
 {
 	DataParser dataParser = Biljetter.getDataParser();
 

@@ -27,6 +27,17 @@
 				android:layout_height="wrap_content" />
 
 			<TextView
+				android:text="@string/Settings_header_theme"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent" />
+
+			<Spinner android:id="@+id/spnThemes"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<TextView
 				android:text="@string/Settings_header_incoming"
 				android:textSize="20sp"
 				android:textStyle="bold"

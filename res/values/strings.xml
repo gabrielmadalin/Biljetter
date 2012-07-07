@@ -39,6 +39,7 @@
 	<string name="Settings_header">Settings</string>
 	<string name="Settings_header_language">Language</string>
 	<string name="Settings_systemlanguage">System language</string>
+	<string name="Settings_header_theme">App theme</string>
 	<string name="Settings_header_incoming">Incoming SMS</string>
 	<string name="Settings_shownotification">Show icon in notification area at arrival</string>
 	<string name="Settings_silencesms">Try to hide sms notification</string>
@@ -54,6 +55,15 @@
 		<item>English</item>
 		<item>Svenska</item>
 	</string-array>
+
+	<string-array name="themes">
+		<item>@string/Settings_themelightdark</item>
+		<item>@string/Settings_themelight</item>
+		<item>@string/Settings_themedark</item>
+	</string-array>
+	<string name="Settings_themelightdark">Light with dark actionbar</string>
+	<string name="Settings_themelight">Light</string>
+	<string name="Settings_themedark">Dark</string>
 
 	<string name="About_header">About Tickets</string>
 	<string name="About_description">This is an app that handles your sms tickets from train and bus companies.\n\nThe app is released under GPL 3 and support and sourcecode is available on GitHub.</string>
