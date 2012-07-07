@@ -367,6 +367,7 @@ public class DataParser
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<FavoriteItem> getFavorites()
 	{
 		if (this.lstFavorites.size() == 0)

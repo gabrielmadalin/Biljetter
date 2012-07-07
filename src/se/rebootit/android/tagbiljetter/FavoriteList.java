@@ -29,14 +29,14 @@ import com.actionbarsherlock.view.*;
 public class FavoriteList extends CustomActivity implements OnClickListener
 {
 	DataParser dataParser = Biljetter.getDataParser();
-	FavoriteListAdapter adapter;
+	ArrayList<Object> lstItems = new ArrayList<Object>();
+	SuperListAdapter adapter;
 
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 
 	ListView lstFavorites;
 	TextView txtNoFavorites;
 
-	ArrayList<Object> lstItems = new ArrayList<Object>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -47,10 +47,9 @@ public class FavoriteList extends CustomActivity implements OnClickListener
 		// Set the correct header
 		getSupportActionBar().setTitle(getString(R.string.Favorites_header));
 
-		adapter = new FavoriteListAdapter(this, R.layout.favoritelist_item, lstItems);
-
 		txtNoFavorites = (TextView)findViewById(R.id.nofavorites);
 
+		adapter = new SuperListAdapter(this, 0, this.lstItems);
 		lstFavorites = (ListView)findViewById(R.id.favoritelist);
 		lstFavorites.setAdapter(adapter);
 		lstFavorites.setOnItemClickListener(new OnItemClickListener()

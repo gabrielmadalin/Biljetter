@@ -27,8 +27,8 @@ import com.actionbarsherlock.view.*;
 
 public class Order extends CustomActivity
 {
-	ArrayList<TransportCompany> lstCompanies = new ArrayList<TransportCompany>();
-	ListAdapter adapter = new OrderCompanyListAdapter(this.lstCompanies, this);
+	ArrayList<Object> lstCompanies = new ArrayList<Object>();
+	SuperListAdapter adapter;
 
 	DataParser dataParser = new DataParser();
 
@@ -43,12 +43,13 @@ public class Order extends CustomActivity
 
 		lstCompanies.addAll(dataParser.getCompanies());
 
+		adapter = new SuperListAdapter(this, 0, this.lstCompanies);
 		ListView list = (ListView)findViewById(R.id.companylist);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new OnItemClickListener()
 		{
 			public void onItemClick(AdapterView<?> info, View v, int position, long id) {
-				TransportCompany transportCompany = lstCompanies.get(position);
+				TransportCompany transportCompany = (TransportCompany)lstCompanies.get(position);
 
 				Intent intent = new Intent(Order.this, OrderOptions.class);
 				intent.putExtra("transportcompany", (Parcelable)transportCompany);

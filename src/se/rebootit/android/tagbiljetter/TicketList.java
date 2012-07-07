@@ -42,8 +42,8 @@ public class TicketList extends CustomActivity implements OnClickListener
 		}
 	};
 
-	ArrayList<Ticket> lstTickets = new ArrayList<Ticket>();
-	TicketListAdapter adapter = new TicketListAdapter(this.lstTickets, this);
+	ArrayList<Object> lstTickets = new ArrayList<Object>();
+	SuperListAdapter adapter;
 
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 	DataParser dataParser = Biljetter.getDataParser();
@@ -69,6 +69,8 @@ public class TicketList extends CustomActivity implements OnClickListener
 
 		((Button)findViewById(R.id.btnScan)).setOnClickListener(this);
 
+		adapter = new SuperListAdapter(this, 0, this.lstTickets);
+
 		// Create the list with all the tickets and make them clickable
 		ListView list = (ListView)findViewById(R.id.ticketlist);
 		list.setAdapter(adapter);
@@ -76,7 +78,7 @@ public class TicketList extends CustomActivity implements OnClickListener
 		{
 			public void onItemClick(AdapterView<?> info, View v, int position, long id)
 			{
-				Ticket ticket = lstTickets.get(position);
+				Ticket ticket = (Ticket)lstTickets.get(position);
 
 				// Show TicketView
 				Intent intent = new Intent(TicketList.this, TicketView.class);
@@ -124,9 +126,6 @@ public class TicketList extends CustomActivity implements OnClickListener
 
 		if (this.lstTickets.size() > 0)
 		{
-			// Make sure all the tickets are sorted by date
-			Collections.sort(this.lstTickets);
-
 			adapter.notifyDataSetChanged();
 
 			((LinearLayout)findViewById(R.id.no_tickets)).setVisibility(LinearLayout.GONE);
@@ -251,26 +250,5 @@ public class TicketList extends CustomActivity implements OnClickListener
 	protected void onPause() {
 		unregisterReceiver(mIntentReceiver);
 		super.onPause();
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState)
-	{
-		savedInstanceState.putParcelableArrayList("tickets", this.lstTickets);
-
-		super.onSaveInstanceState(savedInstanceState);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public void onRestoreInstanceState(Bundle savedInstanceState)
-	{
-		super.onRestoreInstanceState(savedInstanceState);
-
-		if (this.lstTickets.size() == 0) {
-			this.lstTickets = (ArrayList)savedInstanceState.getParcelableArrayList("tickets");
-
-			updateList();
-		}
 	}
 }
