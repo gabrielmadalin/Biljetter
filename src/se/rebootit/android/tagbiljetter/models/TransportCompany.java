@@ -4,20 +4,23 @@
  */
 package se.rebootit.android.tagbiljetter.models;
 
-import android.os.*;
-import android.util.*;
-
+import java.io.*;
 import java.text.*;
 import java.util.*;
 import java.util.regex.*;
+
+import android.os.*;
+import android.util.*;
 
 import se.rebootit.android.tagbiljetter.*;
 
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public abstract class TransportCompany implements Parcelable
+public abstract class TransportCompany implements Parcelable, Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	protected int id;
 	protected String name;
 	protected String phonenumber;

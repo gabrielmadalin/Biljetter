@@ -4,9 +4,9 @@
  */
 package se.rebootit.android.tagbiljetter.models;
 
-import android.os.*;
-
 import java.util.*;
+
+import android.os.*;
 
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>

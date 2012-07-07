@@ -4,13 +4,17 @@
  */
 package se.rebootit.android.tagbiljetter.models;
 
+import java.io.*;
+
 import android.os.*;
 
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class TransportArea implements Parcelable
+public class TransportArea implements Parcelable, Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	private String code;
 	private String name;
 	private String description;

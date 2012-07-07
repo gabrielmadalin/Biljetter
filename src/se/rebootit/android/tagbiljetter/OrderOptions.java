@@ -29,7 +29,11 @@ import com.actionbarsherlock.view.*;
 
 public class OrderOptions extends CustomActivity implements OnClickListener, OnItemSelectedListener
 {
+	DataParser dataParser = Biljetter.getDataParser();
+
 	TransportCompany transportCompany;
+	TransportArea transportArea;
+	TicketType ticketType;
 
 	List<TransportArea> areas;
 	List<TicketType> types;
@@ -38,6 +42,7 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 	String message;
 
 	TextView txtAreaDescription, txtTypeDescription;
+	CheckBox chkFavorite;
 
 	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
 	{
@@ -69,12 +74,15 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 
 		Intent intent = getIntent();
 		this.transportCompany = (TransportCompany)intent.getParcelableExtra("transportcompany");
+		this.transportArea = (TransportArea)intent.getParcelableExtra("transportarea");
+		this.ticketType = (TicketType)intent.getParcelableExtra("tickettype");
 
 		LinearLayout layoutHeader = (LinearLayout)findViewById(R.id.header);
 		TextView txtCompanyname = (TextView)findViewById(R.id.companyname);
 		ImageView imgCompanyLogo = (ImageView)findViewById(R.id.companylogo);
 		txtAreaDescription = (TextView)findViewById(R.id.txtAreaDescription);
 		txtTypeDescription = (TextView)findViewById(R.id.txtTypeDescription);
+		chkFavorite = (CheckBox)findViewById(R.id.chkFavorite);
 
 		int logo = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo() == null ? "nologo" : transportCompany.getLogo(), "drawable","se.rebootit.android.tagbiljetter");
 		imgCompanyLogo.setImageResource(logo);
@@ -109,6 +117,13 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 
 		spnArea.setOnItemSelectedListener(this);
 		spnType.setOnItemSelectedListener(this);
+
+		if (this.transportArea != null && this.ticketType != null) {
+			spnArea.setSelection(adapterArea.getPosition(this.transportArea.getName()));
+			spnType.setSelection(adapterType.getPosition(this.ticketType.getName()));
+
+			chkFavorite.setVisibility(CheckBox.GONE);
+		}
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
@@ -162,11 +177,16 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 	{
 		if (v.getId() == R.id.btnSend)
 		{
-			TransportArea area = areas.get(((Spinner)findViewById(R.id.spnArea)).getSelectedItemPosition());
-			TicketType type = types.get(((Spinner)findViewById(R.id.spnType)).getSelectedItemPosition());
+			TransportArea transportArea = areas.get(((Spinner)findViewById(R.id.spnArea)).getSelectedItemPosition());
+			TicketType ticketType = types.get(((Spinner)findViewById(R.id.spnType)).getSelectedItemPosition());
+
+			if (chkFavorite.isChecked()) {
+				FavoriteItem item = new FavoriteItem(this.transportCompany, transportArea, ticketType);
+				dataParser.addFavorite(item);
+			}
 
 			this.number = transportCompany.getPhoneNumber();
-			this.message = transportCompany.getMessage(area, type);
+			this.message = transportCompany.getMessage(transportArea, ticketType);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(getString(R.string.OrderOptions_confirmSendTitle));

@@ -78,7 +78,7 @@ public class Order extends CustomActivity
 		}
 		else if (item.getItemId() == R.id.menuFavorites)
 		{
-			Intent intent = new Intent(this, Favorites.class);
+			Intent intent = new Intent(this, FavoriteList.class);
 			startActivity(intent);
 			return true;
 		}

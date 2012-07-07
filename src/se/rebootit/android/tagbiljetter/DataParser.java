@@ -14,6 +14,8 @@ import javax.xml.parsers.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
+import org.json.*;
+
 import android.app.*;
 import android.content.*;
 import android.content.res.*;
@@ -30,10 +32,12 @@ public class DataParser
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 
 	ArrayList<TransportCompany> lstCompanies = new ArrayList<TransportCompany>();
+	HashSet<FavoriteItem> lstFavorites = new HashSet<FavoriteItem>();
 
 	DataBaseHelper dbHelper = Biljetter.getDataBaseHelper();
 
 	static HashMap<Integer, TransportCompany> mapCompanies = new HashMap<Integer, TransportCompany>();
+
 
 	/**
 	 * Scan the phone inbox and look for tickets that we can import
@@ -360,6 +364,45 @@ public class DataParser
 				in.close();
 			}
 			catch (Exception e) { }
+		}
+	}
+
+	public ArrayList<FavoriteItem> getFavorites()
+	{
+		if (this.lstFavorites.size() == 0)
+		{
+			try
+			{
+				FileInputStream fis = context.openFileInput("favorites");
+				ObjectInputStream is = new ObjectInputStream(fis);
+				this.lstFavorites = new HashSet<FavoriteItem>((ArrayList<FavoriteItem>)is.readObject());
+				is.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		ArrayList<FavoriteItem> list = new ArrayList<FavoriteItem>(this.lstFavorites);
+		Collections.sort(list);
+		return list;
+	}
+
+	public void addFavorite(FavoriteItem item)
+	{
+		if (!this.lstFavorites.contains(item))
+		{
+			this.lstFavorites.add(item);
+
+			try {
+				FileOutputStream fos = context.openFileOutput("favorites", Context.MODE_PRIVATE);
+				ObjectOutputStream os = new ObjectOutputStream(fos);
+				os.writeObject(new ArrayList<FavoriteItem>(this.lstFavorites));
+				os.close();
+			}
+			catch (Exception e) {
+
+			}
 		}
 	}
 }
