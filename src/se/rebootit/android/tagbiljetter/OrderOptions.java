@@ -76,6 +76,9 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.orderoptions);
 
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.OrderOptions_header));
+
 		Intent intent = getIntent();
 		this.favoriteItem = (FavoriteItem)intent.getParcelableExtra("favorite");
 

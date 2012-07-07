@@ -35,6 +35,9 @@ public class Settings extends CustomActivity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings);
 
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.Settings_header));
+
 		((Button)findViewById(R.id.btnSave)).setOnClickListener(this);
 
 		// The spinner for language selection

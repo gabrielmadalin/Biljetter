@@ -38,6 +38,9 @@ public class Order extends CustomActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.companylist);
 
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.Order_header));
+
 		lstCompanies.addAll(dataParser.getCompanies());
 
 		ListView list = (ListView)findViewById(R.id.companylist);

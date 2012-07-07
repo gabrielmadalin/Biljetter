@@ -44,6 +44,9 @@ public class FavoriteList extends CustomActivity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.favoritelist);
 
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.Favorites_header));
+
 		adapter = new FavoriteListAdapter(this, R.layout.favoritelist_item, lstItems);
 
 		txtNoFavorites = (TextView)findViewById(R.id.nofavorites);

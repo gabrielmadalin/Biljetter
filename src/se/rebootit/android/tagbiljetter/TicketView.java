@@ -45,6 +45,9 @@ public class TicketView extends CustomActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ticketview);
 
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.TicketView_header));
+
 		Intent intent = getIntent();
 		this.ticket = intent.getParcelableExtra("ticket");
 		this.fromNotification = intent.getBooleanExtra("fromNotification", false);

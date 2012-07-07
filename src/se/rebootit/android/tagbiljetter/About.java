@@ -33,6 +33,9 @@ public class About extends CustomActivity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about);
 
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.About_header));
+
 		((Button)findViewById(R.id.btnWebpage)).setOnClickListener(this);
 		((Button)findViewById(R.id.btnDonate)).setOnClickListener(this);
 		((Button)findViewById(R.id.btnChangelog)).setOnClickListener(this);
