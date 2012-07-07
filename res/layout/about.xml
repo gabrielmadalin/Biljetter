@@ -10,7 +10,7 @@
 	<ScrollView
 		android:layout_height="fill_parent"
 		android:layout_width="fill_parent">
-		<LinearLayout
+		<RelativeLayout
 			android:orientation="vertical"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent">
@@ -18,41 +18,21 @@
 			<TextView android:id="@+id/txtDescription"
 				android:text="@string/About_description"
 				android:textSize="20sp"
+				android:padding="6sp"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:layout_gravity="top|center_horizontal"
 				android:paddingBottom="9sp"
-				android:linksClickable="true" />
-
-			<Button android:id="@+id/btnWebpage"
-				android:text="@string/About_webpage"
-				android:layout_height="wrap_content"
-				android:layout_width="fill_parent"
-				android:drawableLeft="@drawable/blacktocat"
-				android:drawablePadding="15sp"
-				android:gravity="left|center_vertical" />
-
-			<Button android:id="@+id/btnDonate"
-				android:text="@string/About_donate"
-				android:layout_height="wrap_content"
-				android:layout_width="fill_parent"
-				android:drawableLeft="@drawable/donate_flattr"
-				android:drawablePadding="15sp"
-				android:gravity="left|center_vertical" />
-
-			<Button android:id="@+id/btnChangelog"
-				android:text="@string/About_changelog"
-				android:layout_height="wrap_content"
-				android:layout_width="fill_parent"
-				android:drawableLeft="@drawable/changelog_icon"
-				android:drawablePadding="15sp"
-				android:gravity="left|center_vertical" />
+				android:linksClickable="true"
+				android:layout_alignParentLeft="true" />
 
 			<TextView android:id="@+id/txtVersion"
 				android:textSize="15sp"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
-				android:gravity="right|center_vertical" />
-		</LinearLayout>
+				android:layout_alignParentBottom="true"
+				android:gravity="bottom|right"
+				android:layout_marginBottom="10dp" />
+		</RelativeLayout>
 	</ScrollView>
 </LinearLayout>

@@ -13,22 +13,20 @@
 	<string name="TicketView_sender">Avsändare:</string>
 	<string name="TicketView_confirmRemoveTitle">Bekräfta borttagning</string>
 	<string name="TicketView_confirmRemoveMessage">Detta kommer bort biljetten permanent!</string>
-
 	<string name="TicketView_menu_notificationLock">Lås till statusfältet</string>
 	<string name="TicketView_menu_remove">Ta bort permanent</string>
 
-	<string name="TicketList_header">Biljetter</string>
-	<string name="TicketList_notickets">Inga biljetter hittade.</string>
-	<string name="TicketList_findsms">Hitta biljetter</string>
-	<string name="TicketList_order">Beställ en biljett</string>
+	<string name="TicketList_header">SMS-biljetter</string>
+	<string name="TicketList_notickets">Inga biljetter hittade</string>
+	<string name="TicketList_findsms">Sök efter biljetter</string>
 	<string name="TicketList_ticketsloaded">Sökning efter biljetter klar!</string>
 	<string name="TicketList_searchingfortickets">Söker efter biljetter...</string>
 
-	<string name="TicketList_menu_findnewsms">Hitta nya biljetter</string>
+	<string name="TicketList_menu_findnewsms">Sök efter biljetter</string>
 	<string name="TicketList_menu_order">Beställ biljett</string>
 	<string name="TicketList_menu_contact">Kontakta</string>
 	<string name="TicketList_menu_settings">Inställningar</string>
-	<string name="TicketList_menu_about">Om Biljetter</string>
+	<string name="TicketList_menu_about">Om appen</string>
 
 	<string name="Contact_header">Kontakt</string>
 	<string name="Contact_reason">Orsak</string>
@@ -39,13 +37,14 @@
 	<string name="Settings_header">Inställningar</string>
 	<string name="Settings_header_language">Språk</string>
 	<string name="Settings_systemlanguage">Systemspråk</string>
-	<string name="Settings_header_incoming">Inkommande SMS</string>
-	<string name="Settings_shownotification">Visa ikon i statusfältet vid ny biljett</string>
-	<string name="Settings_silencesms">Försök gömma sms-notifikation</string>
+	<string name="Settings_header_theme">Utseende</string>
+	<string name="Settings_header_incoming">Nya biljetter</string>
+	<string name="Settings_shownotification">Visa ikon i statusfältet</string>
+	<string name="Settings_silencesms">Försök tysta sms-notifikation</string>
 	<string name="Settings_header_ticketview">Biljettvisning</string>
-	<string name="Settings_keepscreenon">Håll skärmen igång när en biljett visas</string>
+	<string name="Settings_keepscreenon">Håll skärmen igång när biljett visas</string>
 	<string name="Settings_header_scan">Biljettsökning</string>
-	<string name="Settings_lastscan">Senaste biljett:</string>
+	<string name="Settings_lastscan">Senaste biljett hittad:</string>
 	<string name="Settings_never">Aldrig</string>
 	<string name="Settings_clearlastscan">Scanna om alla sms</string>
 
@@ -53,11 +52,10 @@
 	<string name="Settings_themelight">Ljust</string>
 	<string name="Settings_themedark">Mörkt</string>
 
-	<string name="About_header">Om Biljetter</string>
-	<string name="About_description">Det här är en app som hanterar dina sms-biljetter från både tåg- och bussbolag. Allt samlat på ett och samma ställe!\n\nAppen är släppt under GPL 3 och support och hela källkoden finns tillgängligt på GitHub.</string>
-	<string name="About_webpage">Webbplats</string>
-	<string name="About_donate">Donera till appen</string>
-	<string name="About_changelog">Ändringslogg</string>
+	<string name="About_header">Om appen</string>
+	<string name="About_description"><![CDATA[Tack för att du använder Biljetter! Vi hoppas att det ska underlätta ditt resande genom att hålla koll på dina biljetter.<br /><br />
+Stöd oss gärna genom att donera en slant via <a href="https://flattr.com/thing/371293">Flattr</a>, <a href="http://bit.ly/NLU8jV">PayPal</a> eller <a href="bitcoin:1HmJMPH728Y6CQUFHeR8VDZxS1FCnMHipb?amount=2">Bitcoin</a>!<br /><br />
+Appen är släppt under GPL3 och källkoden finns tillgänglig på <a href="https://github.com/erifre/Biljetter">GitHub</a>.]]></string>
 
 	<string name="SmsReceiver_newticket">Ny biljett mottagen!</string>
 	<string name="SmsReceiver_description">För resa %date%</string>

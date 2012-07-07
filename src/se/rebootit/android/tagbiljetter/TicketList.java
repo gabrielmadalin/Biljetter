@@ -68,7 +68,6 @@ public class TicketList extends CustomActivity implements OnClickListener
 		mIntentFilter.addAction("se.rebootit.android.tagbiljett.TicketList.UPDATE_LIST");
 
 		((Button)findViewById(R.id.btnScan)).setOnClickListener(this);
-		((Button)findViewById(R.id.btnOrder)).setOnClickListener(this);
 
 		// Create the list with all the tickets and make them clickable
 		ListView list = (ListView)findViewById(R.id.ticketlist);
@@ -99,11 +98,6 @@ public class TicketList extends CustomActivity implements OnClickListener
 	{
 		if (v.getId() == R.id.btnScan) {
 			scanForTickets(true, true);
-		}
-		else if (v.getId() == R.id.btnOrder)
-		{
-			Intent intent = new Intent(this, Order.class);
-			startActivity(intent);
 		}
 	}
 

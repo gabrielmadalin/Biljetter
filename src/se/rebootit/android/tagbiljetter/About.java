@@ -12,6 +12,7 @@ import android.content.*;
 import android.content.pm.*;
 import android.net.*;
 import android.os.*;
+import android.text.*;
 import android.text.method.*;
 import android.view.View;
 import android.view.View.*;
@@ -23,7 +24,7 @@ import com.actionbarsherlock.view.*;
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class About extends CustomActivity implements OnClickListener
+public class About extends CustomActivity
 {
 	DataParser dataParser = Biljetter.getDataParser();
 
@@ -36,12 +37,9 @@ public class About extends CustomActivity implements OnClickListener
 		// Set the correct header
 		getSupportActionBar().setTitle(getString(R.string.About_header));
 
-		((Button)findViewById(R.id.btnWebpage)).setOnClickListener(this);
-		((Button)findViewById(R.id.btnDonate)).setOnClickListener(this);
-		((Button)findViewById(R.id.btnChangelog)).setOnClickListener(this);
-
-		// Make sure the links in the text is clickable
-		((TextView)findViewById(R.id.txtDescription)).setMovementMethod(LinkMovementMethod.getInstance());
+		TextView txtDescription = ((TextView)findViewById(R.id.txtDescription));
+		txtDescription.setText(Html.fromHtml(getString(R.string.About_description)));
+		txtDescription.setMovementMethod(LinkMovementMethod.getInstance());
 
 		try
 		{
@@ -55,37 +53,6 @@ public class About extends CustomActivity implements OnClickListener
 		catch (Exception e) { }
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	}
-
-	public void onClick(View v)
-	{
-		Intent intent;
-
-		// Open our github page in the web browser
-		if (v.getId() == R.id.btnWebpage)
-		{
-			intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/erifre/Biljetter"));
-			startActivity(intent);
-		}
-		// Open our flattr page in the web browser
-		else if (v.getId() == R.id.btnDonate)
-		{
-			intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://flattr.com/thing/371293"));
-			startActivity(intent);
-		}
-		// Open our Wizard
-		else if (v.getId() == R.id.btnChangelog)
-		{
-			Dialog dialog = new Dialog(this);
-			dialog.setCancelable(true);
-			dialog.setContentView(R.layout.changelog);
-			dialog.setTitle(getString(R.string.About_changelog));
-
-			TextView txtChangelog = (TextView)dialog.findViewById(R.id.txtChangelog);
-			txtChangelog.setText(dataParser.readAsset("changelog.txt", this).toString());
-
-			dialog.show();
-		}
 	}
 
 	@Override

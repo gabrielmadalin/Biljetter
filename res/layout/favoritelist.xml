@@ -11,8 +11,8 @@
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:visibility="gone"
-		android:gravity="top|center"
-		android:padding="10sp" />
+		android:padding="40sp"
+		android:gravity="top|center" />
 
 	<ListView android:id="@+id/favoritelist"
 		android:layout_height="fill_parent"
