@@ -57,8 +57,8 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 			{
 				Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_sending), Toast.LENGTH_LONG).show();
 
-				//~ SmsManager sm = SmsManager.getDefault();
-				//~ sm.sendTextMessage(strNumber, null, strMessage, null, null);
+				SmsManager sm = SmsManager.getDefault();
+				sm.sendTextMessage(strNumber, null, strMessage, null, null);
 
 				setResult(RESULT_OK, getIntent());
 
