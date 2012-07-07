@@ -268,6 +268,7 @@ public class TicketList extends CustomActivity implements OnClickListener
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void onRestoreInstanceState(Bundle savedInstanceState)
 	{
 		super.onRestoreInstanceState(savedInstanceState);

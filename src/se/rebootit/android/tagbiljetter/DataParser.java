@@ -128,25 +128,26 @@ public class DataParser
 	{
 		for (TransportCompany transportCompany : lstCompanies)
 		{
-			if (phonenumber.startsWith(transportCompany.getPhoneNumber())) 
+			if (phonenumber.startsWith(transportCompany.getPhoneNumber()))
 			{
 				String expr = transportCompany.getTicketFormat();
 
 				Pattern pattern = Pattern.compile(expr, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
 				Matcher matcher = pattern.matcher(message);
-				
+
 				if (matcher.matches()) {
 					return transportCompany;
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Return the list of loaded companies
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<TransportCompany> getCompanies()
 	{
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -160,33 +161,33 @@ public class DataParser
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		this.lstCompanies.clear();
 		this.lstCompanies.addAll((ArrayList)((TransportCompanyHandler)handler).getCompanies());
-		
+
 		for (TransportCompany transportCompany : this.lstCompanies) {
 			mapCompanies.put(transportCompany.getId(), transportCompany);
 		}
-		
+
 		Collections.sort(this.lstCompanies, new Comparator<TransportCompany>() {
 			public int compare(TransportCompany p1, TransportCompany p2) {
 				return p1.getName().compareTo(p2.getName());
 				}
 			});
-		
+
 		return this.lstCompanies;
 	}
-	
+
 	private class TransportCompanyHandler extends DefaultHandler
 	{
 		private final ArrayList<TransportCompany> companies = new ArrayList<TransportCompany>();
 		private TransportCompany currentCompany;
 		private StringBuilder builder;
-		
+
 		public ArrayList<TransportCompany> getCompanies() {
 			return this.companies;
 		}
-		
+
 		@Override
 		public void characters(char[] ch, int start, int length)
 				throws SAXException {
@@ -215,7 +216,7 @@ public class DataParser
 		@Override
 		public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 			super.startElement(uri, localName, name, attributes);
-			
+
 			if (localName.equalsIgnoreCase("company")) {
 				try {
 					String type = attributes.getValue("type");
@@ -252,7 +253,7 @@ public class DataParser
 			}
 		}
 	}
-	
+
 	/**
 	 * Write a message to the inbox database
 	 * @param address	From what phone number
@@ -273,7 +274,7 @@ public class DataParser
 
 		ContentResolver contentResolver = Biljetter.getContext().getContentResolver();
 		contentResolver.insert(Uri.parse( "content://sms" ), values);
-		
+
 		// Check if the message was saved correctly
 		Cursor cursor = contentResolver.query(Uri.parse("content://sms/inbox"), new String[] { "_id", "thread_id", "address", "person", "date", "body", "type" }, null, null, null);
 		while (cursor.moveToNext())
@@ -292,12 +293,13 @@ public class DataParser
 				break;
 			}
 		}
-		
+
 		// It was not...
 		return false;
 	}
 
 	// Load old tickets and convert them
+	@SuppressWarnings("unchecked")
 	public void convertFromSuspend()
 	{
 		final File cache_dir = Biljetter.getContext().getCacheDir();
@@ -312,7 +314,7 @@ public class DataParser
 			fis = new FileInputStream(suspend_f);
 			ois = new ObjectInputStream(fis);
 
-			List<Ticket> tickets = (List)ois.readObject();
+			List<Ticket> tickets = (List<Ticket>)ois.readObject();
 
 			for (Ticket ticket : tickets)
 			{
