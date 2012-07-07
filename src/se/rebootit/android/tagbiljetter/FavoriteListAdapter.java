@@ -68,6 +68,12 @@ public class FavoriteListAdapter extends ArrayAdapter
 			int logo = context.getResources().getIdentifier(transportCompany.getLogo() == null ? "nologo" : transportCompany.getLogo(), "drawable", "se.rebootit.android.tagbiljetter");
 			imgLogo.setImageResource(logo);
 
+			int logobg = context.getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable", "se.rebootit.android.tagbiljetter");
+			layout.setBackgroundResource(logobg == 0 ? R.drawable.header_background : logobg);
+
+			txtHeader.setTextColor(Color.parseColor(transportCompany.getTextColor()));
+			txtDescription.setTextColor(Color.parseColor(transportCompany.getTextColor()));
+
 			txtHeader.setText(transportCompany.getName());
 			txtDescription.setText(item.getTransportArea().getName()+", "+item.getTicketType().getName());
 

@@ -88,4 +88,7 @@
 	<string name="OrderOptions_interrupted">Order canceled!</string>
 
 	<string name="Favorites_header">Favorites</string>
+	<string name="Favorites_empyt">No favorites added</string>
+	<string name="Favorites_added">Favorite added</string>
+	<string name="Favorites_removed">Favorite removed</string>
 </resources>

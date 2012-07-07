@@ -68,6 +68,7 @@
 	<string name="OrderOptions_header">Biljettalternativ</string>
 	<string name="OrderOptions_area">Område</string>
 	<string name="OrderOptions_type">Biljettyp</string>
+	<string name="OrderOptions_favorite">Spara som favorit</string>
 	<string name="OrderOptions_send">Skicka beställning</string>
 	<string name="OrderOptions_confirmSendTitle">Bekräfta köp</string>
 	<string name="OrderOptions_confirmSendMessage">Detta kommer skicka \"%message%\" till %number%.</string>
@@ -75,4 +76,7 @@
 	<string name="OrderOptions_interrupted">Beställningen avbruten!</string>
 
 	<string name="Favorites_header">Favoriter</string>
+	<string name="Favorites_empyt">Inga favoriter sparade</string>
+	<string name="Favorites_added">Favorit sparad</string>
+	<string name="Favorites_removed">Favorit borttagen</string>
 </resources>

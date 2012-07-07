@@ -51,7 +51,6 @@ public class TicketType implements Parcelable, Serializable
 		int code = 17;
 		code = 31*code + this.code.hashCode();
 		code = 31*code + this.name.hashCode();
-		code = 31*code + this.description.hashCode();
 
 		return code;
 	}

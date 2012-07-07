@@ -393,16 +393,27 @@ public class DataParser
 		if (!this.lstFavorites.contains(item))
 		{
 			this.lstFavorites.add(item);
+			saveFavorites();
 
-			try {
-				FileOutputStream fos = context.openFileOutput("favorites", Context.MODE_PRIVATE);
-				ObjectOutputStream os = new ObjectOutputStream(fos);
-				os.writeObject(new ArrayList<FavoriteItem>(this.lstFavorites));
-				os.close();
-			}
-			catch (Exception e) {
+		}
+	}
 
-			}
+	public void removeFavorite(FavoriteItem item)
+	{
+		this.lstFavorites.remove(item);
+		saveFavorites();
+	}
+
+	public void saveFavorites()
+	{
+		try {
+			FileOutputStream fos = context.openFileOutput("favorites", Context.MODE_PRIVATE);
+			ObjectOutputStream os = new ObjectOutputStream(fos);
+			os.writeObject(new ArrayList<FavoriteItem>(this.lstFavorites));
+			os.close();
+		}
+		catch (Exception e) {
+
 		}
 	}
 }

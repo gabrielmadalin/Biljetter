@@ -5,6 +5,15 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
+	<TextView android:id="@+id/nofavorites"
+		android:text="@string/Favorites_empyt"
+		android:textSize="20sp"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:visibility="gone"
+		android:gravity="top|center"
+		android:padding="10sp" />
+
 	<ListView android:id="@+id/favoritelist"
 		android:layout_height="fill_parent"
 		android:layout_width="fill_parent"

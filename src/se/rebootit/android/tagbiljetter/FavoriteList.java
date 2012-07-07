@@ -33,6 +33,9 @@ public class FavoriteList extends CustomActivity implements OnClickListener
 
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 
+	ListView lstFavorites;
+	TextView txtNoFavorites;
+
 	ArrayList<Object> lstItems = new ArrayList<Object>();
 
 	@Override
@@ -43,7 +46,9 @@ public class FavoriteList extends CustomActivity implements OnClickListener
 
 		adapter = new FavoriteListAdapter(this, R.layout.favoritelist_item, lstItems);
 
-		ListView lstFavorites = (ListView)findViewById(R.id.favoritelist);
+		txtNoFavorites = (TextView)findViewById(R.id.nofavorites);
+
+		lstFavorites = (ListView)findViewById(R.id.favoritelist);
 		lstFavorites.setAdapter(adapter);
 		lstFavorites.setOnItemClickListener(new OnItemClickListener()
 		{
@@ -52,26 +57,27 @@ public class FavoriteList extends CustomActivity implements OnClickListener
 				FavoriteItem item = (FavoriteItem)lstItems.get(position);
 
 				Intent intent = new Intent(FavoriteList.this, OrderOptions.class);
-				intent.putExtra("transportcompany", (Parcelable)item.getTransportCompany());
-				intent.putExtra("transportarea", (Parcelable)item.getTransportArea());
-				intent.putExtra("tickettype", (Parcelable)item.getTicketType());
+				intent.putExtra("favorite", (Parcelable)item);
 				startActivityForResult(intent, 0);
 			}
 		});
 
-		ArrayList<Object> foo = new ArrayList<Object>();
-		foo.addAll(dataParser.getFavorites());
-		updateList(foo);
+		updateList();
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	// Update the list with the content from an ArrayList
-	public void updateList(ArrayList<Object> list)
+	public void updateList()
 	{
+		ArrayList<Object> list = new ArrayList<Object>();
+		list.addAll(dataParser.getFavorites());
+
 		lstItems.clear();
 		lstItems.addAll(list);
 		adapter.notifyDataSetChanged();
+
+		txtNoFavorites.setVisibility(lstItems.size() == 0 ? TextView.VISIBLE : TextView.GONE);
 	}
 
 	@Override
@@ -80,6 +86,7 @@ public class FavoriteList extends CustomActivity implements OnClickListener
 		if (requestCode == 0 && resultCode == RESULT_OK) {
 			finish();
 		}
+		updateList();
 	}
 
 	@Override

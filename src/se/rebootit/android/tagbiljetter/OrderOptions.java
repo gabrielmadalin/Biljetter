@@ -11,12 +11,14 @@ import android.app.*;
 import android.content.*;
 import android.graphics.*;
 import android.os.*;
+import android.telephony.*;
 import android.util.*;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
-import android.telephony.*;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import se.rebootit.android.tagbiljetter.models.*;
 
@@ -31,36 +33,38 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 {
 	DataParser dataParser = Biljetter.getDataParser();
 
+	FavoriteItem favoriteItem;
 	TransportCompany transportCompany;
 	TransportArea transportArea;
 	TicketType ticketType;
 
-	List<TransportArea> areas;
-	List<TicketType> types;
+	List<TransportArea> lstAreas;
+	List<TicketType> lstTypes;
 
-	String number;
-	String message;
+	String strNumber, strMessage;
 
 	TextView txtAreaDescription, txtTypeDescription;
+	Spinner spnArea, spnType;
 	CheckBox chkFavorite;
+	Button btnSend;
 
 	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
 	{
 		@Override
-		public void onClick(DialogInterface dialog, int which)
+		public void onClick(DialogInterface dialog, int id)
 		{
-			if (which == DialogInterface.BUTTON_POSITIVE)
+			if (id == DialogInterface.BUTTON_POSITIVE)
 			{
 				Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_sending), Toast.LENGTH_LONG).show();
 
-				SmsManager sm = SmsManager.getDefault();
-				sm.sendTextMessage(number, null, message, null, null);
+				//~ SmsManager sm = SmsManager.getDefault();
+				//~ sm.sendTextMessage(strNumber, null, strMessage, null, null);
 
 				setResult(RESULT_OK, getIntent());
 
 				finish();
 			}
-			else if (which == DialogInterface.BUTTON_NEGATIVE) {
+			else if (id == DialogInterface.BUTTON_NEGATIVE) {
 				Toast.makeText(Biljetter.getContext(), getString(R.string.OrderOptions_interrupted), Toast.LENGTH_SHORT).show();
 			}
 		}
@@ -73,9 +77,17 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 		setContentView(R.layout.orderoptions);
 
 		Intent intent = getIntent();
-		this.transportCompany = (TransportCompany)intent.getParcelableExtra("transportcompany");
-		this.transportArea = (TransportArea)intent.getParcelableExtra("transportarea");
-		this.ticketType = (TicketType)intent.getParcelableExtra("tickettype");
+		this.favoriteItem = (FavoriteItem)intent.getParcelableExtra("favorite");
+
+		if (this.favoriteItem == null) {
+			this.transportCompany = (TransportCompany)intent.getParcelableExtra("transportcompany");
+		}
+		else
+		{
+			this.transportCompany = (TransportCompany)this.favoriteItem.getTransportCompany();
+			this.transportArea = (TransportArea)this.favoriteItem.getTransportArea();
+			this.ticketType = (TicketType)this.favoriteItem.getTicketType();
+		}
 
 		LinearLayout layoutHeader = (LinearLayout)findViewById(R.id.header);
 		TextView txtCompanyname = (TextView)findViewById(R.id.companyname);
@@ -83,49 +95,103 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 		txtAreaDescription = (TextView)findViewById(R.id.txtAreaDescription);
 		txtTypeDescription = (TextView)findViewById(R.id.txtTypeDescription);
 		chkFavorite = (CheckBox)findViewById(R.id.chkFavorite);
+		btnSend = (Button)findViewById(R.id.btnSend);
 
-		int logo = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo() == null ? "nologo" : transportCompany.getLogo(), "drawable","se.rebootit.android.tagbiljetter");
+		int logo = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo() == null ? "nologo" : transportCompany.getLogo(), "drawable", "se.rebootit.android.tagbiljetter");
 		imgCompanyLogo.setImageResource(logo);
 
-		int logobg = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable","se.rebootit.android.tagbiljetter");
+		int logobg = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable", "se.rebootit.android.tagbiljetter");
 		layoutHeader.setBackgroundResource(logobg == 0 ? R.drawable.header_background : logobg);
 
 		txtCompanyname.setTextColor(Color.parseColor(transportCompany.getTextColor()));
 		txtCompanyname.setText(transportCompany.getName());
 
-		Spinner spnArea = (Spinner)findViewById(R.id.spnArea);
+		spnArea = (Spinner)findViewById(R.id.spnArea);
 		ArrayAdapter<CharSequence> adapterArea = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 		adapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		areas = transportCompany.getTransportAreas();
-		for (TransportArea area : areas) {
+		this.lstAreas = transportCompany.getTransportAreas();
+		for (TransportArea area : this.lstAreas) {
 			adapterArea.add(area.getName());
 		}
 		spnArea.setAdapter(adapterArea);
 
-		Spinner spnType = (Spinner)findViewById(R.id.spnType);
+		spnType = (Spinner)findViewById(R.id.spnType);
 		ArrayAdapter<CharSequence> adapterType = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 		adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		types = transportCompany.getTicketTypes();
-		for (TicketType type : types) {
+		this.lstTypes = transportCompany.getTicketTypes();
+		for (TicketType type : this.lstTypes) {
 			adapterType.add(type.getName());
 		}
 		spnType.setAdapter(adapterType);
 
-		((Button)findViewById(R.id.btnSend)).setOnClickListener(this);
+		btnSend.setOnClickListener(this);
 
 		spnArea.setOnItemSelectedListener(this);
 		spnType.setOnItemSelectedListener(this);
 
+		// Set values to match favorite
 		if (this.transportArea != null && this.ticketType != null) {
 			spnArea.setSelection(adapterArea.getPosition(this.transportArea.getName()));
 			spnType.setSelection(adapterType.getPosition(this.ticketType.getName()));
 
-			chkFavorite.setVisibility(CheckBox.GONE);
+			spnArea.setEnabled(false);
+			spnType.setEnabled(false);
+
+			chkFavorite.setChecked(true);
 		}
 
+		// Respond to favorite checkbox
+		chkFavorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				if (isChecked)
+				{
+					dataParser.addFavorite(getFavorite());
+					spnArea.setEnabled(false);
+					spnType.setEnabled(false);
+					Toast.makeText(Biljetter.getContext(), getString(R.string.Favorites_added), Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					dataParser.removeFavorite(getFavorite());
+					spnArea.setEnabled(true);
+					spnType.setEnabled(true);
+					Toast.makeText(Biljetter.getContext(), getString(R.string.Favorites_removed), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+
+	public FavoriteItem getFavorite()
+	{
+		TransportArea transportArea = this.lstAreas.get(((Spinner)findViewById(R.id.spnArea)).getSelectedItemPosition());
+		TicketType ticketType = this.lstTypes.get(((Spinner)findViewById(R.id.spnType)).getSelectedItemPosition());
+
+		return new FavoriteItem(transportCompany, transportArea, ticketType);
+	}
+
+	public void onClick(View v)
+	{
+		if (v.getId() == R.id.btnSend)
+		{
+			TransportArea transportArea = this.lstAreas.get(((Spinner)findViewById(R.id.spnArea)).getSelectedItemPosition());
+			TicketType ticketType = this.lstTypes.get(((Spinner)findViewById(R.id.spnType)).getSelectedItemPosition());
+
+			this.strNumber = transportCompany.getPhoneNumber();
+			this.strMessage = transportCompany.getMessage(transportArea, ticketType);
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(getString(R.string.OrderOptions_confirmSendTitle));
+			builder.setMessage(getString(R.string.OrderOptions_confirmSendMessage).replace("%message%", strMessage).replace("%number%", strNumber));
+			builder.setPositiveButton(getString(R.string.yes), dialogClickListener);
+			builder.setNegativeButton(getString(R.string.no), dialogClickListener);
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.show();
+		}
 	}
 
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
@@ -133,7 +199,7 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 		String description;
 		if (parent.getId() == R.id.spnArea)
 		{
-			description = areas.get(pos).getDescription();
+			description = this.lstAreas.get(pos).getDescription();
 			if ("".equals(description) || description == null) {
 				txtAreaDescription.setVisibility(TextView.GONE);
 			}
@@ -144,7 +210,7 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 		}
 		else if (parent.getId() == R.id.spnType)
 		{
-			description = types.get(pos).getDescription();
+			description = this.lstTypes.get(pos).getDescription();
 			if ("".equals(description) || description == null) {
 				txtTypeDescription.setVisibility(TextView.GONE);
 			}
@@ -153,10 +219,6 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 				txtTypeDescription.setVisibility(TextView.VISIBLE);
 			}
 		}
-	}
-
-	public void onNothingSelected(AdapterView parent) {
-		// Do nothing.
 	}
 
 	@Override
@@ -173,28 +235,7 @@ public class OrderOptions extends CustomActivity implements OnClickListener, OnI
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void onClick(View v)
-	{
-		if (v.getId() == R.id.btnSend)
-		{
-			TransportArea transportArea = areas.get(((Spinner)findViewById(R.id.spnArea)).getSelectedItemPosition());
-			TicketType ticketType = types.get(((Spinner)findViewById(R.id.spnType)).getSelectedItemPosition());
-
-			if (chkFavorite.isChecked()) {
-				FavoriteItem item = new FavoriteItem(this.transportCompany, transportArea, ticketType);
-				dataParser.addFavorite(item);
-			}
-
-			this.number = transportCompany.getPhoneNumber();
-			this.message = transportCompany.getMessage(transportArea, ticketType);
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(getString(R.string.OrderOptions_confirmSendTitle));
-			builder.setMessage(getString(R.string.OrderOptions_confirmSendMessage).replace("%message%", message).replace("%number%", number));
-			builder.setPositiveButton(getString(R.string.yes), dialogClickListener);
-			builder.setNegativeButton(getString(R.string.no), dialogClickListener);
-			builder.setIcon(android.R.drawable.ic_dialog_alert);
-			builder.show();
-		}
+	public void onNothingSelected(AdapterView parent) {
+		// Do nothing.
 	}
 }
