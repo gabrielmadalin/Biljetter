@@ -15,9 +15,9 @@ public class TicketType implements Parcelable, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private String code;
-	private String name;
-	private String description;
+	private String code = "";
+	private String name = "";
+	private String description = "";
 
 	public static final Parcelable.Creator<TicketType> CREATOR = new Parcelable.Creator<TicketType>() {
 		public TicketType createFromParcel(Parcel in) {
@@ -44,6 +44,17 @@ public class TicketType implements Parcelable, Serializable
 
 	public void setDescription(String description) { this.description = description; }
 	public String getDescription() { return this.description; }
+
+	@Override
+	public int hashCode()
+	{
+		int code = 17;
+		code = 31*code + this.code.hashCode();
+		code = 31*code + this.name.hashCode();
+		code = 31*code + this.description.hashCode();
+
+		return code;
+	}
 
 	private TicketType(Parcel in) {
 		this.code = in.readString();

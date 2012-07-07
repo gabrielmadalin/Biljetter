@@ -15,9 +15,9 @@ public class TransportArea implements Parcelable, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private String code;
-	private String name;
-	private String description;
+	private String code = "";
+	private String name = "";
+	private String description = "";
 
 	public static final Parcelable.Creator<TransportArea> CREATOR = new Parcelable.Creator<TransportArea>() {
 		public TransportArea createFromParcel(Parcel in) {
@@ -44,6 +44,16 @@ public class TransportArea implements Parcelable, Serializable
 
 	public void setDescription(String description) { this.description = description; }
 	public String getDescription() { return this.description; }
+
+	@Override
+	public int hashCode()
+	{
+		int code = 17;
+		code = 31*code + this.code.hashCode();
+		code = 31*code + this.name.hashCode();
+
+		return code;
+	}
 
 	private TransportArea(Parcel in) {
 		this.code = in.readString();

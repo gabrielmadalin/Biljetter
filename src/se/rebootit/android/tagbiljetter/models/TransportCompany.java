@@ -107,6 +107,16 @@ public abstract class TransportCompany implements Parcelable, Serializable
 	public void setTicketFormat(String ticketformat) { this.ticketformat = ticketformat; }
 	public String getTicketFormat() { return this.ticketformat; }
 
+	@Override
+	public int hashCode()
+	{
+		int code = 17;
+		code = 31*code + this.id;
+		code = 31*code + this.name.hashCode();
+
+		return code;
+	}
+
 	protected TransportCompany(Parcel in) {
 		this.id = in.readInt();
 		this.logo = in.readString();
