@@ -302,43 +302,6 @@ public class DataParser
 		return false;
 	}
 
-	// Load old tickets and convert them
-	@SuppressWarnings("unchecked")
-	public void convertFromSuspend()
-	{
-		final File cache_dir = Biljetter.getContext().getCacheDir();
-		final File suspend_f = new File(cache_dir.getAbsoluteFile() + File.separator + Biljetter.SUSPEND_FILE);
-
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
-		boolean keep = true;
-
-		try
-		{
-			fis = new FileInputStream(suspend_f);
-			ois = new ObjectInputStream(fis);
-
-			List<Ticket> tickets = (List<Ticket>)ois.readObject();
-
-			for (Ticket ticket : tickets)
-			{
-				dbHelper.insertTicket(ticket.getAddress(), ticket.getTimestamp(), ticket.getMessage(), ticket.getProvider(), ticket.getTicketTimestamp());
-			}
-			keep = false;
-		}
-		catch (Exception e) {
-
-		}
-		finally {
-			try {
-				if (ois != null) ois.close();
-				if (fis != null) fis.close();
-				if (!keep) suspend_f.delete();
-			}
-			catch (Exception e) { }
-		}
-	}
-
 	public static CharSequence readAsset(String asset, Activity activity)
 	{
 		BufferedReader in = null;

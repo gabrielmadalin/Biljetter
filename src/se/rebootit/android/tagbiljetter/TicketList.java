@@ -89,9 +89,6 @@ public class TicketList extends CustomActivity implements OnClickListener
 			}
 		});
 
-		// Convert old tickets to the new format
-		dataParser.convertFromSuspend();
-
 		// Load tickets and update the list
 		updateList();
 	}
