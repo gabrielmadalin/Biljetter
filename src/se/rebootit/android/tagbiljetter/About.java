@@ -8,11 +8,13 @@ package se.rebootit.android.tagbiljetter;
 import java.util.*;
 
 import android.app.*;
-import android.content.*;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.*;
 import android.net.*;
 import android.os.*;
-import android.text.*;
+import android.text.ClipboardManager;
+import android.text.Html;
 import android.text.method.*;
 import android.view.View;
 import android.view.View.*;
@@ -24,7 +26,7 @@ import com.actionbarsherlock.view.*;
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class About extends CustomActivity
+public class About extends CustomActivity implements OnClickListener
 {
 	DataParser dataParser = Biljetter.getDataParser();
 
@@ -41,6 +43,10 @@ public class About extends CustomActivity
 		txtDescription.setText(Html.fromHtml(getString(R.string.About_description)));
 		txtDescription.setMovementMethod(LinkMovementMethod.getInstance());
 
+		((ImageButton)findViewById(R.id.btnFlattr)).setOnClickListener(this);
+		((ImageButton)findViewById(R.id.btnPayPal)).setOnClickListener(this);
+		((ImageButton)findViewById(R.id.btnBitcoin)).setOnClickListener(this);
+
 		try
 		{
 			// Add the version number
@@ -48,11 +54,44 @@ public class About extends CustomActivity
 			int versionNumber = pinfo.versionCode;
 			String versionName = pinfo.versionName;
 
-			((TextView)findViewById(R.id.txtVersion)).setText(versionName+" (build "+versionNumber+")");
+			((TextView)findViewById(R.id.txtVersion)).setText("Version "+versionName+" (build "+versionNumber+")");
 		}
 		catch (Exception e) { }
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+
+	@SuppressWarnings("deprecation")
+	public void onClick(View v)
+	{
+		Intent intent;
+		switch(v.getId())
+		{
+			case R.id.btnFlattr:
+				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://flattr.com/thing/371293"));
+				startActivity(intent);
+				break;
+
+			case R.id.btnPayPal:
+				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=erik@fredriksen.se&item_name=Biljetter%20-%20Donation&currency_code=EUR"));
+				startActivity(intent);
+				break;
+
+			case R.id.btnBitcoin:
+				String strAddress = "1HmJMPH728Y6CQUFHeR8VDZxS1FCnMHipb";
+				if (isIntentAvailable(this, "bitcoin:"+strAddress)) {
+					intent = new Intent(Intent.ACTION_VIEW, Uri.parse("bitcoin:"+strAddress));
+					startActivity(intent);
+				}
+				else
+				{
+					ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+					clipboard.setText(strAddress);
+
+					Toast.makeText(this, getString(R.string.About_addresscopied), Toast.LENGTH_LONG).show();
+				}
+				break;
+		}
 	}
 
 	@Override
@@ -68,4 +107,25 @@ public class About extends CustomActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	/**
+	 * Indicates whether the specified action can be used as an intent. This
+	 * method queries the package manager for installed packages that can
+	 * respond to an intent with the specified action. If no suitable package is
+	 * found, this method returns false.
+	 *
+	 * @param context The application's environment.
+	 * @param action The Intent action to check for availability.
+	 *
+	 * @return True if an Intent with the specified action can be sent and
+	 *         responded to, false otherwise.
+	 */
+	public static boolean isIntentAvailable(Context context, String action) {
+		final PackageManager packageManager = context.getPackageManager();
+		final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(action));
+		List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+		return list.size() > 0;
+	}
+
+
 }

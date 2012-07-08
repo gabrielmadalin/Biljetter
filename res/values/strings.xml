@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="app_name">Biljetter</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
 	<string name="save">Save</string>
@@ -64,9 +65,8 @@
 	<string name="Settings_themedark">Dark</string>
 
 	<string name="About_header">About the app</string>
-	<string name="About_description"><![CDATA[Thank you for using Tickets! We hope that it will ease your traveling by keeping your tickets safe.<br /><br />
-Please support us by donating via <a href="https://flattr.com/thing/371293">Flattr</a>, <a href="http://bit.ly/NLU8jV">PayPal</a> or <a href="bitcoin:1HmJMPH728Y6CQUFHeR8VDZxS1FCnMHipb?amount=2">Bitcoin</a>!<br /><br />
-The app is released under GPL3 and the source if available at <a href="https://github.com/erifre/Biljetter">GitHub</a>.]]></string>
+	<string name="About_description"><![CDATA[Thank you for using Tickets! We hope that it will ease your traveling by keeping your tickets safe.<br/><br/>The app is released under GPL3 and the source and support is available at <a href="https://github.com/erifre/Biljetter">GitHub</a>.<br/><br/>If you have a few bucks to spare, please make a small donation! :)]]></string>
+	<string name="About_addresscopied">Address copied!</string>
 
 	<string name="SmsReceiver_newticket">New ticket received!</string>
 	<string name="SmsReceiver_description">For travel %date%</string>

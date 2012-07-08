@@ -32,20 +32,22 @@ public class FavoriteItem implements Parcelable, Serializable, Comparable<Favori
 	public TransportArea getTransportArea() { return this.transportArea; }
 	public TicketType getTicketType() { return this.ticketType; }
 
-	public int compare(FavoriteItem p1, FavoriteItem p2) {
-		return p1.getTransportCompany().getName().compareTo(p2.getTransportCompany().getName());
-	}
+	public int compareTo(FavoriteItem p)
+	{
+		int res = this.getTransportCompany().getName().compareTo(p.getTransportCompany().getName());
+		if (res != 0) {
+			return res;
+		}
+		res = this.getTransportArea().getName().compareTo(p.getTransportArea().getName());
+		if (res != 0) {
+			return res;
+		}
 
-	public int compareTo(FavoriteItem p) {
-		return getTransportCompany().getName().compareTo(p.getTransportCompany().getName());
+		return this.getTicketType().getName().compareTo(p.getTicketType().getName());
 	}
 
 	@Override
-	public boolean equals(Object obj)
-	{
-		if (!(obj instanceof FavoriteItem))
-			return false;
-
+	public boolean equals(Object obj) {
 		return (((FavoriteItem)obj).hashCode() == hashCode() ? true : false);
 	}
 
