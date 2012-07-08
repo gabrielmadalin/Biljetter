@@ -53,9 +53,9 @@
 	<string name="Settings_themedark">Mörkt</string>
 
 	<string name="About_header">Om appen</string>
-	<string name="About_description"><![CDATA[Tack för att du använder Biljetter! Vi hoppas att det ska underlätta ditt resande genom att hålla koll på dina biljetter.<br /><br />
-Stöd oss gärna genom att donera en slant via <a href="https://flattr.com/thing/371293">Flattr</a>, <a href="http://bit.ly/NLU8jV">PayPal</a> eller <a href="bitcoin:1HmJMPH728Y6CQUFHeR8VDZxS1FCnMHipb?amount=2">Bitcoin</a>!<br /><br />
-Appen är släppt under GPL3 och källkoden finns tillgänglig på <a href="https://github.com/erifre/Biljetter">GitHub</a>.]]></string>
+	<string name="About_description"><![CDATA[Tack för att du använder Biljetter! Vi hoppas att det ska underlätta ditt resande genom att hålla koll på dina biljetter.<br/><br/>Appen är släppt under GPL3 och källkoden finns tillgänglig på <a href="https://github.com/erifre/Biljetter">GitHub</a>.<br/><br/>Har du några kronor över får du gärna göra en liten donation! :)]]></string>
+	<string name="About_addresscopied">Adressen kopierad!</string>
+
 
 	<string name="SmsReceiver_newticket">Ny biljett mottagen!</string>
 	<string name="SmsReceiver_description">För resa %date%</string>

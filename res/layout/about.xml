@@ -10,7 +10,7 @@
 	<ScrollView
 		android:layout_height="fill_parent"
 		android:layout_width="fill_parent">
-		<RelativeLayout
+		<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent">
@@ -21,18 +21,38 @@
 				android:padding="6sp"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
-				android:layout_gravity="top|center_horizontal"
 				android:paddingBottom="9sp"
-				android:linksClickable="true"
-				android:layout_alignParentLeft="true" />
+				android:linksClickable="true" />
+
+			<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:gravity="top|center">
+
+				<ImageButton android:id="@+id/btnFlattr"
+					android:src="@drawable/donate_flattr"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content" />
+
+				<ImageButton android:id="@+id/btnPayPal"
+					android:src="@drawable/donate_paypal"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content" />
+
+				<ImageButton android:id="@+id/btnBitcoin"
+					android:src="@drawable/donate_bitcoin"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content" />
+
+			</LinearLayout>
 
 			<TextView android:id="@+id/txtVersion"
 				android:textSize="15sp"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
-				android:layout_alignParentBottom="true"
 				android:gravity="bottom|right"
-				android:layout_marginBottom="10dp" />
-		</RelativeLayout>
+				android:paddingTop="10sp" />
+		</LinearLayout>
 	</ScrollView>
 </LinearLayout>
