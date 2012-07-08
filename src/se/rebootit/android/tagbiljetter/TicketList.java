@@ -10,12 +10,12 @@ import java.io.*;
 
 import android.app.*;
 import android.content.*;
-import android.content.pm.*;
 import android.content.SharedPreferences.*;
 import android.util.*;
 import android.net.*;
 import android.os.*;
-import android.view.*;
+import android.preference.*;
+import android.view.View;
 import android.view.ContextMenu.*;
 import android.view.View.*;
 import android.widget.*;
@@ -24,16 +24,26 @@ import android.widget.AdapterView.*;
 import se.rebootit.android.tagbiljetter.models.*;
 import se.rebootit.android.tagbiljetter.contact.*;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
+
 /**
  * TicketList is the class that lists all the found tickets in the users SMS inbox.
  *
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
 
-public class TicketList extends Activity implements OnClickListener
+public class TicketList extends CustomActivity implements OnClickListener
 {
-	ArrayList<Ticket> lstTickets = new ArrayList<Ticket>();
-	TicketListAdapter adapter = new TicketListAdapter(this.lstTickets, this);
+	private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateList();
+		}
+	};
+
+	ArrayList<Object> lstTickets = new ArrayList<Object>();
+	SuperListAdapter adapter;
 
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 	DataParser dataParser = Biljetter.getDataParser();
@@ -42,6 +52,7 @@ public class TicketList extends Activity implements OnClickListener
 	IntentFilter mIntentFilter;
 
 	boolean scanRunning = false;
+	String locale = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -49,12 +60,16 @@ public class TicketList extends Activity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ticketlist);
 
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.TicketList_header));
+
 		// Listen for messages from SmsReceiver
 		mIntentFilter = new IntentFilter();
 		mIntentFilter.addAction("se.rebootit.android.tagbiljett.TicketList.UPDATE_LIST");
 
 		((Button)findViewById(R.id.btnScan)).setOnClickListener(this);
-		((Button)findViewById(R.id.btnOrder)).setOnClickListener(this);
+
+		adapter = new SuperListAdapter(this, 0, this.lstTickets);
 
 		// Create the list with all the tickets and make them clickable
 		ListView list = (ListView)findViewById(R.id.ticketlist);
@@ -63,7 +78,7 @@ public class TicketList extends Activity implements OnClickListener
 		{
 			public void onItemClick(AdapterView<?> info, View v, int position, long id)
 			{
-				Ticket ticket = lstTickets.get(position);
+				Ticket ticket = (Ticket)lstTickets.get(position);
 
 				// Show TicketView
 				Intent intent = new Intent(TicketList.this, TicketView.class);
@@ -74,38 +89,27 @@ public class TicketList extends Activity implements OnClickListener
 			}
 		});
 
-		// Convert old tickets to the new format
-		dataParser.convertFromSuspend();
-
 		// Load tickets and update the list
 		updateList();
 	}
 
 	public void onClick(View v)
 	{
-		switch(v.getId())
-		{
-			case R.id.btnScan:
-				scanForTickets(true, true);
-				break;
-
-			case R.id.btnOrder:
-				Intent intent = new Intent(this, Order.class);
-				startActivity(intent);
-				break;
+		if (v.getId() == R.id.btnScan) {
+			scanForTickets(true, true);
 		}
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		switch(requestCode)
-		{
-			case 0:
-				if (resultCode == RESULT_OK) {
-					updateList();
-				}
-				break;
+		if (requestCode == 0 && resultCode == RESULT_OK) {
+			updateList();
+		}
+		else if (requestCode == 1 && resultCode == RESULT_OK) {
+			Intent intent = new Intent(this, TicketList.class);
+			startActivity(intent);
+			finish();
 		}
 	}
 
@@ -119,9 +123,6 @@ public class TicketList extends Activity implements OnClickListener
 
 		if (this.lstTickets.size() > 0)
 		{
-			// Make sure all the tickets are sorted by date
-			Collections.sort(this.lstTickets);
-
 			adapter.notifyDataSetChanged();
 
 			((LinearLayout)findViewById(R.id.no_tickets)).setVisibility(LinearLayout.GONE);
@@ -183,11 +184,12 @@ public class TicketList extends Activity implements OnClickListener
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.ticketlist, menu);
 
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -211,8 +213,9 @@ public class TicketList extends Activity implements OnClickListener
 				return true;
 */
 			case R.id.settings:
+				this.locale = sharedPreferences.getString("locale", "");
 				intent = new Intent(this, Settings.class);
-				startActivity(intent);
+				startActivityForResult(intent, 1);
 				return true;
 
 			case R.id.about:
@@ -226,8 +229,17 @@ public class TicketList extends Activity implements OnClickListener
 	}
 
 	@Override
-	protected void onResume() {
+	protected void onResume()
+	{
+		// Has the app locale changed? Then restart the view!
+		if (!(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("locale", "").equals(this.locale))) {
+			finish();
+			Intent myIntent = new Intent(TicketList.this, TicketList.class);
+			startActivity(myIntent);
+		}
+
 		registerReceiver(mIntentReceiver, mIntentFilter);
+
 		super.onResume();
 	}
 
@@ -236,31 +248,4 @@ public class TicketList extends Activity implements OnClickListener
 		unregisterReceiver(mIntentReceiver);
 		super.onPause();
 	}
-
-	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState)
-	{
-		savedInstanceState.putParcelableArrayList("tickets", this.lstTickets);
-
-		super.onSaveInstanceState(savedInstanceState);
-	}
-
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState)
-	{
-		super.onRestoreInstanceState(savedInstanceState);
-
-		if (this.lstTickets.size() == 0) {
-			this.lstTickets = (ArrayList)savedInstanceState.getParcelableArrayList("tickets");
-
-			updateList();
-		}
-	}
-
-	private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			updateList();
-		}
-	};
 }

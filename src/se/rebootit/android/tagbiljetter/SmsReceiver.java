@@ -44,7 +44,10 @@ public class SmsReceiver extends BroadcastReceiver
 				String message = sms.getMessageBody();
 
 				TransportCompany transportCompany = dataParser.parseMessage(phonenumber, messagetime, message);
-				if (transportCompany != null)
+				if (transportCompany == null) {
+					return;
+				}
+				else
 				{
 					int provider = transportCompany.getId();
 					long tickettime = transportCompany.getTicketTimestamp(message);
@@ -100,9 +103,6 @@ public class SmsReceiver extends BroadcastReceiver
 					Editor e = sharedPreferences.edit();
 					e.putBoolean("rescan", true);
 					e.commit();
-				}
-				else {
-					return;
 				}
 			}
 		}

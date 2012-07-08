@@ -16,7 +16,18 @@ public class TransportCompany_SJ extends TransportCompany
 {
 	String[] months = new String[] { "jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec" };
 
-	public TransportCompany_SJ() { };
+	public static final Parcelable.Creator<TransportCompany_SJ> CREATOR = new Parcelable.Creator<TransportCompany_SJ>()
+	{
+		public TransportCompany_SJ createFromParcel(Parcel in) {
+			return new TransportCompany_SJ(in);
+		}
+
+		public TransportCompany_SJ[] newArray(int size) {
+			return new TransportCompany_SJ[size];
+		}
+	};
+
+	public TransportCompany_SJ() { }
 
 	public TransportCompany_SJ(String name, String phonenumber) {
 		super(name, phonenumber);
@@ -30,7 +41,7 @@ public class TransportCompany_SJ extends TransportCompany
 				String[] parts = data[0].split(" ");
 
 				int year = Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date(messagetime)));
-				int month = (java.util.Arrays.asList(this.months).indexOf(parts[1])+1);
+				int month = java.util.Arrays.asList(this.months).indexOf(parts[1])+1;
 				int day = Integer.parseInt(parts[0]);
 
 				String date = year+"-"+(month < 10 ? "0"+month : month)+"-"+(day < 10 ? "0"+day : day);
@@ -41,26 +52,15 @@ public class TransportCompany_SJ extends TransportCompany
 		return 0;
 	}
 
-	public static final Parcelable.Creator<TransportCompany_SJ> CREATOR = new Parcelable.Creator<TransportCompany_SJ>()
-	{
-		public TransportCompany_SJ createFromParcel(Parcel in) {
-			return new TransportCompany_SJ(in);
-		}
+	public int describeContents() {
+		return 0;
+	}
 
-		public TransportCompany_SJ[] newArray(int size) {
-			return new TransportCompany_SJ[size];
-		}
-	};
+	public void writeToParcel(Parcel out, int flags) {
+		super.writeToParcel(out, flags);
+	}
 
-    public int describeContents() {
-        return 0;
-    }
-
-    public void writeToParcel(Parcel out, int flags) {
-        super.writeToParcel(out, flags);
-    }
-
-    private TransportCompany_SJ(Parcel in) {
-        super(in);
-    }
+	private TransportCompany_SJ(Parcel in) {
+		super(in);
+	}
 }

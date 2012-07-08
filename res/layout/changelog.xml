@@ -13,7 +13,6 @@
 
 		<TextView android:id="@+id/txtHeader"
 			android:textSize="20sp"
-			android:textColor="@color/white"
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			android:layout_gravity="top|center_horizontal"
@@ -22,7 +21,6 @@
 
 		<TextView android:id="@+id/txtChangelog"
 			android:textSize="17sp"
-			android:textColor="@color/white"
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			android:layout_gravity="top|center_horizontal"

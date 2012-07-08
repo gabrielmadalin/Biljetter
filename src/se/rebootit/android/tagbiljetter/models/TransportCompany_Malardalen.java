@@ -14,7 +14,18 @@ import java.util.*;
  */
 public class TransportCompany_Malardalen extends TransportCompany
 {
-	public TransportCompany_Malardalen() { };
+	public static final Parcelable.Creator<TransportCompany_Malardalen> CREATOR = new Parcelable.Creator<TransportCompany_Malardalen>()
+	{
+		public TransportCompany_Malardalen createFromParcel(Parcel in) {
+			return new TransportCompany_Malardalen(in);
+		}
+
+		public TransportCompany_Malardalen[] newArray(int size) {
+			return new TransportCompany_Malardalen[size];
+		}
+	};
+
+	public TransportCompany_Malardalen() { }
 
 	public TransportCompany_Malardalen(String name, String phonenumber) {
 		super(name, phonenumber);
@@ -31,26 +42,15 @@ public class TransportCompany_Malardalen extends TransportCompany
 		return 0;
 	}
 
-	public static final Parcelable.Creator<TransportCompany_Malardalen> CREATOR = new Parcelable.Creator<TransportCompany_Malardalen>()
-	{
-		public TransportCompany_Malardalen createFromParcel(Parcel in) {
-			return new TransportCompany_Malardalen(in);
-		}
+	public int describeContents() {
+		return 0;
+	}
 
-		public TransportCompany_Malardalen[] newArray(int size) {
-			return new TransportCompany_Malardalen[size];
-		}
-	};
+	public void writeToParcel(Parcel out, int flags) {
+		super.writeToParcel(out, flags);
+	}
 
-    public int describeContents() {
-        return 0;
-    }
-
-    public void writeToParcel(Parcel out, int flags) {
-        super.writeToParcel(out, flags);
-    }
-
-    private TransportCompany_Malardalen(Parcel in) {
-        super(in);
-    }
+	private TransportCompany_Malardalen(Parcel in) {
+		super(in);
+	}
 }

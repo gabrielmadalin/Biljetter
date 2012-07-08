@@ -4,18 +4,30 @@
  */
 package se.rebootit.android.tagbiljetter.models;
 
+import java.io.*;
+
 import android.os.*;
 
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class TransportArea implements Parcelable
+public class TransportArea implements Parcelable, Serializable
 {
-	private String code;
-	private String name;
-	private String description;
+	private static final long serialVersionUID = 1L;
 
-	public TransportArea() { }
+	private String code = "";
+	private String name = "";
+	private String description = "";
+
+	public static final Parcelable.Creator<TransportArea> CREATOR = new Parcelable.Creator<TransportArea>() {
+		public TransportArea createFromParcel(Parcel in) {
+			return new TransportArea(in);
+		}
+
+		public TransportArea[] newArray(int size) {
+			return new TransportArea[size];
+		}
+	};
 
 	public TransportArea(String code, String name, String description)
 	{
@@ -33,6 +45,16 @@ public class TransportArea implements Parcelable
 	public void setDescription(String description) { this.description = description; }
 	public String getDescription() { return this.description; }
 
+	@Override
+	public int hashCode()
+	{
+		int code = 17;
+		code = 31*code + this.code.hashCode();
+		code = 31*code + this.name.hashCode();
+
+		return code;
+	}
+
 	private TransportArea(Parcel in) {
 		this.code = in.readString();
 		this.name = in.readString();
@@ -45,15 +67,6 @@ public class TransportArea implements Parcelable
 		out.writeString(this.description);
 	}
 
-	public static final Parcelable.Creator<TransportArea> CREATOR = new Parcelable.Creator<TransportArea>() {
-		public TransportArea createFromParcel(Parcel in) {
-			return new TransportArea(in);
-		}
-
-		public TransportArea[] newArray(int size) {
-			return new TransportArea[size];
-		}
-	};
 
 	public int describeContents() {
 		return 0;

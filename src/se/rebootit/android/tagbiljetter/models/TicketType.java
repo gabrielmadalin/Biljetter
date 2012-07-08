@@ -4,18 +4,30 @@
  */
 package se.rebootit.android.tagbiljetter.models;
 
+import java.io.*;
+
 import android.os.*;
 
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class TicketType implements Parcelable
+public class TicketType implements Parcelable, Serializable
 {
-	private String code;
-	private String name;
-	private String description;
+	private static final long serialVersionUID = 1L;
 
-	public TicketType() { }
+	private String code = "";
+	private String name = "";
+	private String description = "";
+
+	public static final Parcelable.Creator<TicketType> CREATOR = new Parcelable.Creator<TicketType>() {
+		public TicketType createFromParcel(Parcel in) {
+			return new TicketType(in);
+		}
+
+		public TicketType[] newArray(int size) {
+			return new TicketType[size];
+		}
+	};
 
 	public TicketType(String code, String name, String description)
 	{
@@ -33,6 +45,16 @@ public class TicketType implements Parcelable
 	public void setDescription(String description) { this.description = description; }
 	public String getDescription() { return this.description; }
 
+	@Override
+	public int hashCode()
+	{
+		int code = 17;
+		code = 31*code + this.code.hashCode();
+		code = 31*code + this.name.hashCode();
+
+		return code;
+	}
+
 	private TicketType(Parcel in) {
 		this.code = in.readString();
 		this.name = in.readString();
@@ -44,16 +66,6 @@ public class TicketType implements Parcelable
 		out.writeString(this.name);
 		out.writeString(this.description);
 	}
-
-	public static final Parcelable.Creator<TicketType> CREATOR = new Parcelable.Creator<TicketType>() {
-		public TicketType createFromParcel(Parcel in) {
-			return new TicketType(in);
-		}
-
-		public TicketType[] newArray(int size) {
-			return new TicketType[size];
-		}
-	};
 
 	public int describeContents() {
 		return 0;

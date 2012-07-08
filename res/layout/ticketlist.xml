@@ -3,9 +3,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:orientation="vertical"
-	android:paddingLeft="4sp"
-	android:paddingRight="4sp">
+	android:orientation="vertical">
 
 	<LinearLayout android:id="@+id/no_tickets"
 		android:layout_width="fill_parent"
@@ -15,23 +13,16 @@
 		<TextView
 			android:text="@string/TicketList_notickets"
 			android:textSize="20sp"
-			android:textColor="@color/white"
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
-			android:paddingBottom="20sp"
-			android:layout_alignParentTop="true" />
+			android:padding="40sp"
+			android:paddingBottom="50sp"
+			android:gravity="top|center" />
 		<Button android:id="@+id/btnScan"
-			style="?button"
 			android:text="@string/TicketList_findsms"
 			android:layout_height="wrap_content"
-			android:layout_width="fill_parent"
-			android:layout_alignParentBottom="true"	/>
-		<Button android:id="@+id/btnOrder"
-			style="?button"
-			android:text="@string/TicketList_order"
-			android:layout_height="wrap_content"
-			android:layout_width="fill_parent"
-			android:layout_alignParentBottom="true"	/>
+			android:layout_width="wrap_content"
+			android:layout_gravity="top|center" />
 	</LinearLayout>
 
 	<ListView android:id="@+id/ticketlist"
@@ -39,5 +30,6 @@
 		android:layout_width="fill_parent"
 		android:layout_alignParentBottom="true"
 		android:textColor="#ffffff"
-		android:dividerHeight="0px" android:divider="#FFFFFF" />
+		android:dividerHeight="0px"
+		android:divider="#FFFFFF" />
 </LinearLayout>

@@ -55,13 +55,8 @@ public class CompanyList extends Activity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		switch(requestCode)
-		{
-			case 0:
-				if (resultCode == RESULT_OK) {
-					finish();
-				}
-				break;
+		if (requestCode == 0 && resultCode == RESULT_OK) {
+			finish();
 		}
 	}
 }

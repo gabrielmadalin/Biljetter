@@ -16,7 +16,18 @@ public class TransportCompany_Ostgotatrafiken extends TransportCompany
 {
 	String[] months = new String[] { "jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec" };
 
-	public TransportCompany_Ostgotatrafiken() { };
+	public static final Parcelable.Creator<TransportCompany_Ostgotatrafiken> CREATOR = new Parcelable.Creator<TransportCompany_Ostgotatrafiken>()
+	{
+		public TransportCompany_Ostgotatrafiken createFromParcel(Parcel in) {
+			return new TransportCompany_Ostgotatrafiken(in);
+		}
+
+		public TransportCompany_Ostgotatrafiken[] newArray(int size) {
+			return new TransportCompany_Ostgotatrafiken[size];
+		}
+	};
+
+	public TransportCompany_Ostgotatrafiken() { }
 
 	public TransportCompany_Ostgotatrafiken(String name, String phonenumber) {
 		super(name, phonenumber);
@@ -33,26 +44,15 @@ public class TransportCompany_Ostgotatrafiken extends TransportCompany
 		return 0;
 	}
 
-	public static final Parcelable.Creator<TransportCompany_Ostgotatrafiken> CREATOR = new Parcelable.Creator<TransportCompany_Ostgotatrafiken>()
-	{
-		public TransportCompany_Ostgotatrafiken createFromParcel(Parcel in) {
-			return new TransportCompany_Ostgotatrafiken(in);
-		}
+	public int describeContents() {
+		return 0;
+	}
 
-		public TransportCompany_Ostgotatrafiken[] newArray(int size) {
-			return new TransportCompany_Ostgotatrafiken[size];
-		}
-	};
+	public void writeToParcel(Parcel out, int flags) {
+		super.writeToParcel(out, flags);
+	}
 
-    public int describeContents() {
-        return 0;
-    }
-
-    public void writeToParcel(Parcel out, int flags) {
-        super.writeToParcel(out, flags);
-    }
-
-    private TransportCompany_Ostgotatrafiken(Parcel in) {
-        super(in);
-    }
+	private TransportCompany_Ostgotatrafiken(Parcel in) {
+		super(in);
+	}
 }

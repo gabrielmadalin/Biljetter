@@ -11,15 +11,19 @@ import android.content.SharedPreferences.*;
 import android.graphics.*;
 import android.os.*;
 import android.util.*;
-import android.view.*;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.*;
 
 import se.rebootit.android.tagbiljetter.models.*;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
+
 /**
  * @author Erik Fredriksen <erik@fredriksen.se>
  */
-public class TicketView extends Activity
+public class TicketView extends CustomActivity
 {
 	Ticket ticket;
 	DataParser dataParser = Biljetter.getDataParser();
@@ -41,6 +45,9 @@ public class TicketView extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ticketview);
 
+		// Set the correct header
+		getSupportActionBar().setTitle(getString(R.string.TicketView_header));
+
 		Intent intent = getIntent();
 		this.ticket = intent.getParcelableExtra("ticket");
 		this.fromNotification = intent.getBooleanExtra("fromNotification", false);
@@ -56,14 +63,15 @@ public class TicketView extends Activity
 
 		TransportCompany transportCompany = dataParser.getCompany(ticket.getProvider());
 
-		if (transportCompany.getLogo() != null) {
+		if (transportCompany.getLogo() == null) {
+			imgCompanyLogo.setVisibility(ImageView.GONE);
+		}
+		else
+		{
 			int logo = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo(), "drawable","se.rebootit.android.tagbiljetter");
 			int logobg = Biljetter.getContext().getResources().getIdentifier(transportCompany.getLogo()+"_bg", "drawable","se.rebootit.android.tagbiljetter");
 			imgCompanyLogo.setImageResource(logo);
-			layoutHeader.setBackgroundResource((logobg == 0 ? R.drawable.header_background : logobg));
-		}
-		else {
-			imgCompanyLogo.setVisibility(ImageView.GONE);
+			layoutHeader.setBackgroundResource(logobg == 0 ? R.drawable.header_background : logobg);
 		}
 
 		txtCompanyname.setTextColor(Color.parseColor(transportCompany.getTextColor()));
@@ -86,21 +94,8 @@ public class TicketView extends Activity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.ticketview, menu);
-
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
-		if (fromNotification) {
-			((MenuItem)menu.findItem(R.id.menuNotification)).setTitle(getString(R.string.TicketView_menu_notificationHide));
-		}
-		else {
-			((MenuItem)menu.findItem(R.id.menuNotification)).setTitle(getString(R.string.TicketView_menu_notificationShow));
-		}
 
 		return true;
 	}
@@ -142,7 +137,6 @@ public class TicketView extends Activity
 				return true;
 
 			case R.id.menuRemove:
-
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setTitle(getString(R.string.TicketView_confirmRemoveTitle));
 				builder.setMessage(getString(R.string.TicketView_confirmRemoveMessage));
@@ -150,6 +144,7 @@ public class TicketView extends Activity
 				builder.setNegativeButton(getString(R.string.no), dialogClickListener);
 				builder.setIcon(android.R.drawable.ic_dialog_alert);
 				builder.show();
+				return true;
 
 			default:
 				return super.onOptionsItemSelected(item);
@@ -159,17 +154,16 @@ public class TicketView extends Activity
 	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
 	{
 		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			switch (which) {
-				case DialogInterface.BUTTON_POSITIVE:
-					dbHelper.removeTicket(ticket.getAddress(), ticket.getTimestamp(), ticket.getMessage());
+		public void onClick(DialogInterface dialog, int which)
+		{
+			if (which == DialogInterface.BUTTON_POSITIVE)
+			{
+				dbHelper.removeTicket(ticket.getAddress(), ticket.getTimestamp(), ticket.getMessage());
 
-					Biljetter.getContext().sendBroadcast(new Intent("se.rebootit.android.tagbiljett.TicketList.UPDATE_LIST"));
+				Biljetter.getContext().sendBroadcast(new Intent("se.rebootit.android.tagbiljett.TicketList.UPDATE_LIST"));
 
-					setResult(RESULT_OK, getIntent());
-					finish();
-
-					break;
+				setResult(RESULT_OK, getIntent());
+				finish();
 			}
 		}
 	};

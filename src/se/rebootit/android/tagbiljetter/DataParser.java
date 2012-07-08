@@ -14,6 +14,8 @@ import javax.xml.parsers.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
+import org.json.*;
+
 import android.app.*;
 import android.content.*;
 import android.content.res.*;
@@ -30,10 +32,12 @@ public class DataParser
 	SharedPreferences sharedPreferences = Biljetter.getSharedPreferences();
 
 	ArrayList<TransportCompany> lstCompanies = new ArrayList<TransportCompany>();
+	HashSet<FavoriteItem> lstFavorites = new HashSet<FavoriteItem>();
 
 	DataBaseHelper dbHelper = Biljetter.getDataBaseHelper();
 
 	static HashMap<Integer, TransportCompany> mapCompanies = new HashMap<Integer, TransportCompany>();
+
 
 	/**
 	 * Scan the phone inbox and look for tickets that we can import
@@ -128,25 +132,26 @@ public class DataParser
 	{
 		for (TransportCompany transportCompany : lstCompanies)
 		{
-			if (phonenumber.startsWith(transportCompany.getPhoneNumber())) 
+			if (phonenumber.startsWith(transportCompany.getPhoneNumber()))
 			{
 				String expr = transportCompany.getTicketFormat();
 
 				Pattern pattern = Pattern.compile(expr, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
 				Matcher matcher = pattern.matcher(message);
-				
+
 				if (matcher.matches()) {
 					return transportCompany;
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Return the list of loaded companies
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<TransportCompany> getCompanies()
 	{
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -160,33 +165,33 @@ public class DataParser
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		this.lstCompanies.clear();
 		this.lstCompanies.addAll((ArrayList)((TransportCompanyHandler)handler).getCompanies());
-		
+
 		for (TransportCompany transportCompany : this.lstCompanies) {
 			mapCompanies.put(transportCompany.getId(), transportCompany);
 		}
-		
+
 		Collections.sort(this.lstCompanies, new Comparator<TransportCompany>() {
 			public int compare(TransportCompany p1, TransportCompany p2) {
 				return p1.getName().compareTo(p2.getName());
 				}
 			});
-		
+
 		return this.lstCompanies;
 	}
-	
+
 	private class TransportCompanyHandler extends DefaultHandler
 	{
-		private ArrayList<TransportCompany> companies = new ArrayList<TransportCompany>();
+		private final ArrayList<TransportCompany> companies = new ArrayList<TransportCompany>();
 		private TransportCompany currentCompany;
 		private StringBuilder builder;
-		
+
 		public ArrayList<TransportCompany> getCompanies() {
 			return this.companies;
 		}
-		
+
 		@Override
 		public void characters(char[] ch, int start, int length)
 				throws SAXException {
@@ -215,7 +220,7 @@ public class DataParser
 		@Override
 		public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 			super.startElement(uri, localName, name, attributes);
-			
+
 			if (localName.equalsIgnoreCase("company")) {
 				try {
 					String type = attributes.getValue("type");
@@ -252,7 +257,7 @@ public class DataParser
 			}
 		}
 	}
-	
+
 	/**
 	 * Write a message to the inbox database
 	 * @param address	From what phone number
@@ -273,7 +278,7 @@ public class DataParser
 
 		ContentResolver contentResolver = Biljetter.getContext().getContentResolver();
 		contentResolver.insert(Uri.parse( "content://sms" ), values);
-		
+
 		// Check if the message was saved correctly
 		Cursor cursor = contentResolver.query(Uri.parse("content://sms/inbox"), new String[] { "_id", "thread_id", "address", "person", "date", "body", "type" }, null, null, null);
 		while (cursor.moveToNext())
@@ -292,45 +297,9 @@ public class DataParser
 				break;
 			}
 		}
-		
+
 		// It was not...
 		return false;
-	}
-
-	// Load old tickets and convert them
-	public void convertFromSuspend()
-	{
-		final File cache_dir = Biljetter.getContext().getCacheDir();
-		final File suspend_f = new File(cache_dir.getAbsoluteFile() + File.separator + Biljetter.SUSPEND_FILE);
-
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
-		boolean keep = true;
-
-		try
-		{
-			fis = new FileInputStream(suspend_f);
-			ois = new ObjectInputStream(fis);
-
-			List<Ticket> tickets = (List)ois.readObject();
-
-			for (Ticket ticket : tickets)
-			{
-				dbHelper.insertTicket(ticket.getAddress(), ticket.getTimestamp(), ticket.getMessage(), ticket.getProvider(), ticket.getTicketTimestamp());
-			}
-			keep = false;
-		}
-		catch (Exception e) {
-
-		}
-		finally {
-			try {
-				if (ois != null) ois.close();
-				if (fis != null) fis.close();
-				if (keep == false) suspend_f.delete();
-			}
-			catch (Exception e) { }
-		}
 	}
 
 	public static CharSequence readAsset(String asset, Activity activity)
@@ -358,6 +327,57 @@ public class DataParser
 				in.close();
 			}
 			catch (Exception e) { }
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<FavoriteItem> getFavorites()
+	{
+		if (this.lstFavorites.size() == 0)
+		{
+			try
+			{
+				FileInputStream fis = context.openFileInput("favorites");
+				ObjectInputStream is = new ObjectInputStream(fis);
+				this.lstFavorites = new HashSet<FavoriteItem>((ArrayList<FavoriteItem>)is.readObject());
+				is.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		ArrayList<FavoriteItem> list = new ArrayList<FavoriteItem>(this.lstFavorites);
+		Collections.sort(list);
+		return list;
+	}
+
+	public void addFavorite(FavoriteItem item)
+	{
+		if (!this.lstFavorites.contains(item))
+		{
+			this.lstFavorites.add(item);
+			saveFavorites();
+
+		}
+	}
+
+	public void removeFavorite(FavoriteItem item)
+	{
+		this.lstFavorites.remove(item);
+		saveFavorites();
+	}
+
+	public void saveFavorites()
+	{
+		try {
+			FileOutputStream fos = context.openFileOutput("favorites", Context.MODE_PRIVATE);
+			ObjectOutputStream os = new ObjectOutputStream(fos);
+			os.writeObject(new ArrayList<FavoriteItem>(this.lstFavorites));
+			os.close();
+		}
+		catch (Exception e) {
+
 		}
 	}
 }

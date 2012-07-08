@@ -18,46 +18,41 @@
 			<TextView android:id="@+id/txtDescription"
 				android:text="@string/About_description"
 				android:textSize="20sp"
-				android:textColor="@color/white"
+				android:padding="6sp"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
-				android:layout_gravity="top|center_horizontal"
 				android:paddingBottom="9sp"
 				android:linksClickable="true" />
 
-			<Button android:id="@+id/btnWebpage"
-				style="?button"
-				android:text="@string/About_webpage"
-				android:layout_height="wrap_content"
+			<LinearLayout
+				android:orientation="horizontal"
 				android:layout_width="fill_parent"
-				android:drawableLeft="@drawable/blacktocat"
-				android:drawablePadding="15sp"
-				android:gravity="left|center_vertical" />
+				android:layout_height="wrap_content"
+				android:gravity="top|center">
 
-			<Button android:id="@+id/btnDonate"
-				style="?button"
-				android:text="@string/About_donate"
-				android:layout_height="wrap_content"
-				android:layout_width="fill_parent"
-				android:drawableLeft="@drawable/donate_flattr"
-				android:drawablePadding="15sp"
-				android:gravity="left|center_vertical" />
+				<ImageButton android:id="@+id/btnFlattr"
+					android:src="@drawable/donate_flattr"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content" />
 
-			<Button android:id="@+id/btnChangelog"
-				style="?button"
-				android:text="@string/About_changelog"
-				android:layout_height="wrap_content"
-				android:layout_width="fill_parent"
-				android:drawableLeft="@drawable/changelog_icon"
-				android:drawablePadding="15sp"
-				android:gravity="left|center_vertical" />
+				<ImageButton android:id="@+id/btnPayPal"
+					android:src="@drawable/donate_paypal"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content" />
+
+				<ImageButton android:id="@+id/btnBitcoin"
+					android:src="@drawable/donate_bitcoin"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content" />
+
+			</LinearLayout>
 
 			<TextView android:id="@+id/txtVersion"
 				android:textSize="15sp"
-				android:textColor="@color/white"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
-				android:gravity="right|center_vertical" />
+				android:gravity="bottom|right"
+				android:paddingTop="10sp" />
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>
